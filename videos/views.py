@@ -157,7 +157,7 @@ class HordPage(View):
 
 
 class HordProfile(LoginRequiredMixin,View):
-    template_name = 'videos/hord_page.html'
+    template_name = 'videos/hord_profile.html'
 
     def get(self,request):
         hord = get_object_or_404(Hord,owner=request.user)
