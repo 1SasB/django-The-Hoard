@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row g-5" >
+    <div class="col-md-8" style="padding-right:0xp;">
+        <div class="card">
+            <video width="100%" height="auto" controls autoplay>
+                <source src="{{ video.path.url }}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+            <div class="card-body" >
+                <div class="container" style="padding: 0.4px; margin-bottom: 3px;">
+                    
+                    <!-- <img src="mypic.jpg" style="width: 750px; height: 480px;"> -->
+                    <h4 style="margin-top: 10px;">{{video.title}}</h4>
+                    <div class="container" style="padding-left: 0px; display: flex;">
+                        <div>
+                            <p style="margin: 0px;">456,455 views . Feb 25,2020</p>
+                        </div>
+                        
+                                    <div style="margin-left: 25px;">
+                                        <span class="fa-stack" style="vertical-align: middle;">
+                                        <i class="far fa-thumbs-up fa-stack-1x" style="padding-left: 0px;"></i>
+                                        <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                
+                                    </span>
+                                    <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                        <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                        <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                
+                                    </span>
+                                    <span>2.5K</span>
+                                    <!-- unlike button -->
+
+                                    <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                        <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                        <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                    </span>
+                                    <span class="fa-stack" style="vertical-align: middle;">
+                                        <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                        <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                    </span>
+                                    <span>2.5K</span>
+                                    </div>
+
+                    </div>
+                    <hr style="margin-top: 0px;">
+                    <div class="container" style="padding-left: 0px;">
+                        <div class="container" style="padding-left: 0px; margin-bottom: 20px;" >
+                            <h6>
+                                {{video.hord}}
+                            </h6>
+                        </div>
+                        <p>
+                            {{video.description}}
+                            
+                        </p>
+                    </div>
+                        
+                        
+                                    
+                                
+                    
+                </div>
+         
+            </div>
+        </div>
+        <hr>
+        <div class="card">
+            <div class="card-body" >
+                <h4>Comments</h4>
+                <div class="container" id="comment_form" style="padding: 0px">
+                    <form action="">
+                        <input  type="text" name="comment" id="comment-input" placeholder="Type a comment" >
+                        <div style="margin-top: 8.5px;">
+                            <a  id="comment-btn">Submit</a>
+                            <!-- <button class="btn btn-secondary btn-sm" id="comment-btn">Submit</button> -->
+                        </div>
+                    </form>
+                </div>
+                <hr>
+                <div class="container" style="padding: 0 4px; margin-bottom: 3px;">
+                    <ul class="list-unstyled">
+                        <div class="container" style="margin: 0px; padding: 0px;">
+                            <li>
+                                <span style=" margin-bottom: 0px;">
+                                    <p style="margin: 0px;">
+                                        Benjamin Stilinski
+                                        <div class="dropdown" style="float: right">
+                                          <!-- <button onclick="myFunction()" class="dropbtn">Dropdown</button> -->
+                                          <a href="#"
+                                        onclick="myFunction()" class="dropbtn" ><i class="fas fa-ellipsis-v" style=" margin-top: 4.5px; margin-right: 4.5px;"></i></a>
+                                          <div id="myDropdown" class="dropdown-content">
+                                            <a href="#">Link 1</a>
+                                            <a href="#">Link 2</a>
+                                            <a href="#">Link 3</a>
+                                          </div>
+                                        </div>
+                                    </p>
+                                    <p style="margin: 0px; font-size: 9px;"> 5 days ago</p>
+                                    <p style=" margin-bottom: 0px;">
+                                    This is a comment This is a comment that iv been wanting to ask a lot so thanks man i really apprecias
+                                    This is a comment This is a comment that iv been wanting to ask a lot so thanks man i really apprecias
+                                    This is a comment This is a comment that iv been wanting to ask a lot so thanks man i really apprecias
+                                    </p>
+                                </span>
+                                <div class="container" style="padding: 0px; margin-bottom: 7.5px; margin-top: 5px;">
+                                    <!-- like button -->
+                                    <span class="fa-stack" style="vertical-align: middle;">
+                                        <i class="far fa-thumbs-up fa-stack-1x" style="padding-left: 0px;"></i>
+                                        <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                
+                                    </span>
+                                    <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                        <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                        <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                
+                                    </span>
+                                    <span>2.5K</span>
+                                    <!-- unlike button -->
+
+                                    <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                        <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                        <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                    </span>
+                                    <span class="fa-stack" style="vertical-align: middle;">
+                                        <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                        <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                    </span>
+                                    <span>2.5K</span>
+                                    {% if request.user.is_authenticated%}
+                                    <a id="reply_btn" style="margin-left: 25px;" onclick="replyFunction(this)"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                    {% else %}
+                                    <a href="{% url 'login' %}?next={% url 'videos:video' video.id %}" id="reply_btn" style="margin-left: 25px;" ><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                    {% endif %}
+                                    <a href="#" onclick="my_Function()" style="margin-left: 20px;">
+                                        View replys
+                                    </a> <!-- "onclick="my_Function()" href="#" style="margin-left: 20px;">View replys</a> -->
+                            
+                                </div>
+                                <div class="container" id="reply_form" style="display: none;">
+                                    <form action="">
+                                        <input class="form-control form-control-sm" type="text" name="Reply" placeholder="Type a reply" id="reply-input" >
+                                        <div style="margin-top: 8.5px;">
+                                            <button class="btn btn-secondary btn-sm" id="reply_btn">Submit</button>
+                                            <button class="btn btn-secondary btn-sm" onclick="replyFunction(this)" >Cancel</button>
+                                        </div>
+                                    </form>
+                                    
+                                    
+                                </div>
+                            </li>
+                            
+                        </div>
+                            <ul class="list-unstyled" id="reply_container" style="margin-left: 20px; margin-right: 4.5px; display: none;">
+                                <div class="container" style="margin: 0px; padding: 0px;">
+                                    <p style="margin: 0px;">
+                                        Benjamin Stilinski
+                                        <i class="fas fa-ellipsis-v" style="float: right; margin-top: 4.5px;"></i>
+                                    </p>
+                                    <p style="margin: 0px; font-size: 9px;"> 2 days ago</p>
+                                </div>
+                                <div class="container" style="margin: 0px; padding: 0px;">
+
+                                    <li>
+                                    This is a reply from another person and things yh. this is a comment alright.
+                                    </li>
+                                    <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
+                                <!-- like button -->
+                                        <span class="fa-stack" style="vertical-align: middle;">
+                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                    
+                                        </span>
+                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                    
+                                        </span>
+                                        <span>2.5K</span>
+                                        <!-- unlike button -->
+
+                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                        </span>
+                                        <span class="fa-stack" style="vertical-align: middle;">
+                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                        </span>
+                                        <span>2.5K</span>
+
+
+                                        <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                        <a href="#" style="margin-left: 20px;">View replys</a>
+                                    </div>
+                                    
+                                </div>
+                            </ul>
+                    </ul>
+                    
+                </div>
+         
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" >
+        <div class="row" >
+            
+            <div class="col" >
+                {% for video in video_list %}
+                <div class="card" style="margin: 0px;">
+                    <img class="thumbnail-image" src="http://unsplash.it/250/110?gravity=center" alt="">
+                <div class="card-body" style="margin: 0px;" >
+                    <!-- <div class="container" style="margin: 0px 0px 3px 0px;">
+                        <a href="{% url 'videos:video_detail' video.id %}" class="thumbnail" video-duration="12:15">
+                            <img class="thumbnail-image" src="http://unsplash.it/390/250?gravity=center" alt="">
+                        </a>
+                    </div> -->
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="{% url 'videos:video_detail' video.id %}" >
+                                <b>{{video.title}}</b>
+                            </a>
+                        </li>
+                        <li>{{video.hord}}</li>
+                        <li>{{video.date_uploaded}}</li>
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{%endblock%}

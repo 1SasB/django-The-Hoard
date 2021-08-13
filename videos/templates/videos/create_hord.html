@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post" class="form-group">
+    {% csrf_token %}
+      {{hord_form}}
+      <button type="submit" class="btn btn-primary">Continue</button>
+
+</form>
+{% endblock %}
