@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="conitainer">
+    {% if videos %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">SELECT</th>
+                        <th scope="col">TITLE</th>
+                        <th scope="col">DATE UPLOADED</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for video in videos %}
+                        <tr>
+                            <td scope="row"><input type="checkbox" name="video_id[]" id="function_video" value="video.id"></td>
+                            <a href="{% url 'videos:video_detail' video.id %}"><td>{{video.title}}</td></a>
+                            <td>{{video.date_uploaded}}</td>
+                            <!-- <td>@mdo</td> -->
+                        </tr>
+                        {% endfor %}
+                </table>
+            {% else %}
+                    <h3>Such Emptiness :(</h3>
+            {% endif %}
+</div>
+{%endblock%}

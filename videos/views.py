@@ -105,7 +105,7 @@ class NewVideo(LoginRequiredMixin,View):
                               hord=hord
                               )
             new_video.save()
-            
+            print(new_video.pk)
 
             # clip = VideoFileClip(file_url)
             # frame = clip.reader.fps
@@ -162,8 +162,8 @@ class HordProfile(LoginRequiredMixin,View):
     def get(self,request):
         hord = get_object_or_404(Hord,owner=request.user)
         hord_videos = Video.objects.filter(hord=hord)
-
-        return render(request,self.template_name)
+        ctx ={'videos': hord_videos}
+        return render(request,self.template_name,ctx)
 
 
 
