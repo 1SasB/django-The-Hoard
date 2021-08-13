@@ -14,7 +14,7 @@
                         {% for video in videos %}
                         <tr>
                             <td scope="row"><input type="checkbox" name="video_id[]" id="function_video" value="{{video.id}}"></td>
-                            <td><a href="{% url 'videos:video_detail' video.id %}"></a>{{video.title}}</td>
+                            <td><a href="{% url 'videos:video_detail' video.id %}">{{video.title}}</a></td>
                             <td>{{video.date_uploaded}}</td>
                             <!-- <td>@mdo</td> -->
                         </tr>
