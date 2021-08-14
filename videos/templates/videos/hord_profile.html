@@ -1,27 +1,83 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="conitainer">
-    {% if videos %}
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">SELECT</th>
-                        <th scope="col">TITLE</th>
-                        <th scope="col">DATE UPLOADED</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% for video in videos %}
-                        <tr>
-                            <td scope="row"><input type="checkbox" name="video_id[]" id="function_video" value="{{video.id}}"></td>
-                            <td><a href="{% url 'videos:video_detail' video.id %}">{{video.title}}</a></td>
-                            <td>{{video.date_uploaded}}</td>
-                            <!-- <td>@mdo</td> -->
-                        </tr>
-                        {% endfor %}
-                </table>
-            {% else %}
-                    <h3>Such Emptiness :(</h3>
-            {% endif %}
-</div>
-{%endblock%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: #DCDCDC;">
+    <div class="conitainer">
+        {% if videos %}
+                    <!-- <form action="{% url 'videos:video_delete' %}" id="delete-form"> -->
+                        <table class="table">
+                            {% csrf_token %}
+                            <thead>
+                            <tr>
+                                <th scope="col">SELECT</th>
+                                <th scope="col">TITLE</th>
+                                <th scope="col">DATE UPLOADED</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for video in videos %}
+                                <tr id="{{video.id}}">
+                                    <td scope="row"><input type="checkbox" name="video_id[]" id="function_video" value="{{video.id}}"></td>
+                                    <td><a href="{% url 'videos:video_detail' video.id %}">{{video.title}}</a></td>
+                                    <td>{{video.date_uploaded}}</td>
+                                    <!-- <td>@mdo</td> -->
+                                </tr>
+                                {% endfor %}
+                        </table>
+                        <button class="btn btn-danger" id="delete_btn">DELETE</button>
+                        <input type="hidden" name="delete_url" value="{% url 'videos:video_delete' %}">
+                    <!-- </form> -->
+                    
+                {% else %}
+                        <h3>Such Emptiness :(</h3>
+                {% endif %}
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    console.log("inside profileJS")
+$(document).ready(function(){
+    const deleteForm = document.getElementById("delete-form")
+    $('#delete_btn').click(function(){
+        console.log("inside profileJS")
+        const csrf = $('input[name="csrfmiddlewaretoken"]').val()
+        const del_url = $('input[name="delete_url"]').val()
+        console.log(csrf)
+        console.log(del_url)
+        if(confirm("Are you sure you want to delete")){
+            var id = []
+            $('input[name="video_id[]"]:checked').each(function(i){
+                id[i] = $(this).val()
+                console.log(id)
+            })
+            if(id.length===0){
+                alert("You must select item(s) for deletion")
+            }else{
+                $.ajax({
+                    url: del_url,
+                    type: 'POST',
+                    data: {
+                        id,
+                        csrfmiddlewaretoken: csrf
+                    },
+                    success:function(response){
+                        for(var i = 0; i <= id.length ; i++){
+                            $('tr#'+id[i]+'').css('background-color','#ffff')
+                            $('tr#'+id[i]+'').fadeOut('slow')
+                        }
+
+                    }
+                })
+            }
+        }
+
+    })
+
+})
+</script>
+</html>

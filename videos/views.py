@@ -145,6 +145,18 @@ class VideoView(View):
         return render(request, self.template_name, context)
 
 
+class VideoDelete(LoginRequiredMixin,View):
+    success_url = reverse_lazy('videos:hord_profile')
+    def post(self,request):
+        if request.is_ajax():
+            video_ids = request.POST.getlist('id[]')
+            print(video_ids)
+            for id in video_ids:
+                video = Video.objects.get(pk=id)
+                video.delete()
+            return redirect(self.success_url)
+
+
 
 class HordPage(View):
     template_name = 'videos/hord_page.html'

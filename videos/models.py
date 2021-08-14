@@ -55,7 +55,7 @@ class Video(models.Model):
         return str(self.title) + ": " + str(self.path)
     
     def delete(self,*args,**kwargs):
-        os.remove(os.path.join(settings.MEDIA_ROOT,'videos/',self.path.name))
+        os.remove(os.path.join(settings.MEDIA_ROOT,self.path.name))
         super(Video,self).delete(*args,**kwargs)
 
 # class VidLike(models.Model):
