@@ -128,21 +128,67 @@ class VideoView(View):
         # fetch video from DB by ID
         video_list = Video.objects.order_by('date_uploaded').exclude(id=id)[:3]
         video_by_id = get_object_or_404(Video,id=id)
-        print(video_list)
+        comments = Comment.objects.filter(video=video_by_id).order_by('-date_uploaded')
         context = { 'video': video_by_id, 
-                    'video_list': video_list }
+                    'video_list': video_list,
+                    'comments': comments }
         # DoesNotExist
-        print(request.user)
-        if request.user.is_authenticated:
-            print('user signed in')
-            comment_form = CommentForm()
-            reply_form = ReplyForm()
-            context['comment_form'] = comment_form
+        # print(request.user)
+        # if request.user.is_authenticated:
+        #     print('user signed in')
+        #     comment_form = CommentForm()
+        #     reply_form = ReplyForm()
+        #     context['comment_form'] = comment_form
 
-        comments = Comment.objects.filter(video__id=id).order_by('-date_uploaded')[:5]
-        print(comments)
-        context['comments'] = comments
+        # comments = Comment.objects.filter(video__id=id).order_by('-date_uploaded')[:5]
+        # print(comments)
         return render(request, self.template_name, context)
+
+class CreateComment(LoginRequiredMixin,View):
+    def get(self,request):
+        print("Inside Comment Create View")
+        comment = request.GET.get('comment',None)
+        print(comment)
+        video_id = request.GET.get('vid_id',None)
+        print(video_id)
+        video = get_object_or_404(Video,pk=int(video_id))
+
+        comment_obj = Comment.objects.create(c_text=comment,video=video,user=request.user)
+        res_comment = {
+            'id': comment_obj.id,
+            'comment_text': comment_obj.c_text,
+            'uploaded_date': comment_obj.date_uploaded,
+            'user': comment_obj.user.username
+        }
+
+        data = {
+            'comment': res_comment
+        }
+
+        return JsonResponse(data)
+
+
+class CreateReply(LoginRequiredMixin,View):
+    def get(self,request):
+        c_reply = request.GET.get('comment',None)
+        comment_id = request.GET.get('vid_id',None)
+        comment = get_object_or_404(Comment,pk=comment_id)
+        
+
+        reply_obj = Comment.objects.create(r_text=c_reply,comment=comment,user=request.user)
+        reply = {
+            'id': reply_obj.id,
+            'reply': reply_obj.r_text,
+            'uploaded_date': reply_obj.date_uploaded,
+            'user': reply_obj.user
+        }
+
+        data = {
+            'reply': reply
+        }
+
+        return JsonResponse(data)
+
 
 
 class VideoDelete(LoginRequiredMixin,View):

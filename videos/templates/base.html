@@ -102,55 +102,9 @@
     </div>
     
     <script src="{% static 'TheHoard/upload.js' %}"></script>
-    <script type="text/javascript">
-      /* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-       function myFunction() {
-         console.log("im in my_function")
-         x = document.getElementById("myDropdown");
-         if (x.style.display === "none") {
-           x.style.display = "block";
-         } else {
-           x.style.display = "none";
-         }
-       }
-
-       // Close the dropdown menu if the user clicks outside of it
-       window.onclick = function(event) {
-         if (!event.target.matches('.dropbtn')) {
-           var dropdowns = document.getElementsByClassName("dropdown-content");
-           console.log(dropdowns)
-           var i;
-           for (i = 0; i < dropdowns.length; i++) {
-             var openDropdown = dropdowns[i];
-             if (openDropdown.classList.contains('show')) {
-               openDropdown.classList.remove('show');
-             }
-           }
-         }
-       }
-
-       function my_Function() {
-         var x = document.getElementById("reply_container");
-         console.log("im in my_function")
-         if (x.style.display === "none") {
-           x.style.display = "block";
-         } else {
-           x.style.display = "none";
-         }
-       }
-
-       function replyFunction(x) {
-         console.log(x.id)
-         var x = document.getElementById("reply_form");
-         console.log("im in replyfunction")
-         if (x.style.display === "none") {
-           x.style.display = "block";
-         } else {
-           x.style.display = "none";
-         }
-       }
-  </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  {% block javascript %}
+  {% endblock javascript %}
 </body>
 </html>
