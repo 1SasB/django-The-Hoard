@@ -58,7 +58,8 @@
                         </p>
                     </div>
                         
-                        
+                    <!-- edit icon <i class="bi bi-pencil"></i> -->
+                    <!-- delete icon <i class="bi bi-trash"></i> -->
                                     
                                 
                     
@@ -92,6 +93,10 @@
                                     <span style=" margin-bottom: 0px;">
                                         <p style="margin: 0px;">
                                             {{comment.user}}
+                                            {% if comment.user == user %}
+                                            <a href="" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a>
+                                            <a href=""><i class="bi bi-trash"></i></a>
+                                            {% endif %}
                                         </p>
                                         <p style="margin: 0px; font-size: 9px;">{{comment.date_uploaded}}</p>
                                         <p style=" margin-bottom: 0px;">
@@ -150,7 +155,8 @@
                                     <div class="container" style="margin: 0px; padding: 0px;">
                                         <p style="margin: 0px;">
                                             Benjamin Stilinski
-                                            <i class="fas fa-ellipsis-v" style="float: right; margin-top: 4.5px;"></i>
+                                            <a href=""><i class="bi bi-pencil"></i></a>
+                                            <a href=""><i class="bi bi-trash"></i></a>
                                         </p>
                                         <p style="margin: 0px; font-size: 9px;"> 2 days ago</p>
                                     </div>
@@ -195,7 +201,7 @@
                         </div>
                             
                         {% else %}
-                        <h6>NO comments here</h6>
+                        <h6>--this---</h6>
                         {% endif %}
                     </ul>
                     
@@ -326,6 +332,10 @@ function appendToCommentdiv(comment) {
                                     <span style=" margin-bottom: 0px;">
                                         <p style="margin: 0px;">
                                             ${comment.user}
+                                            {% if comment.user == user %}
+                                            <a href="" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a>
+                                            <a href=""><i class="bi bi-trash"></i></a>
+                                            {% endif %}
                                         </p>
                                         <p style="margin: 0px; font-size: 9px;">${comment.uploaded_date}</p>
                                         <p style=" margin-bottom: 0px;">
