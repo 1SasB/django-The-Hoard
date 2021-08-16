@@ -90,17 +90,19 @@
                             {% for comment in comments %}
                             <div class="comment-container" style="margin: 0px; padding: 0px;">
                                 <li>
-                                    <span style=" margin-bottom: 0px;">
-                                        <p style="margin: 0px;">
+                                    <span style=" margin-bottom: 0px;" id="{{comment.id}}-comment-span">
+                                        <p style="margin: 0px;" name="comment-user" >
                                             {{comment.user}}
-                                            {% if comment.user == user %}
-                                            <a href="" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a>
-                                            <a href=""><i class="bi bi-trash"></i></a>
-                                            {% endif %}
                                         </p>
-                                        <p style="margin: 0px; font-size: 9px;">{{comment.date_uploaded}}</p>
-                                        <p style=" margin-bottom: 0px;">
-                                        {{comment.c_text}}
+                                        {% if comment.user == user %}
+                                            <!-- <a href="#" onclick="editComment({{comment.id}})" data-bs-toggle="modal" data-bs-target="#CommentModal" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a> -->
+                                            <button type="button" class="btn btn-secondary" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment('{{comment.id}}')" ><i class="bi bi-pencil"></i></button>
+                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment('{{comment.id}}')"><i class="bi bi-trash"></i></button>
+                                            <!-- <a href="#"><i class="bi bi-trash"></i></a> -->
+                                        {% endif %}
+                                        <p style="margin: 0px; font-size: 9px;" name="comment-date" >{{comment.date_uploaded}}</p>
+                                        <p class="CommentText" style=" margin-bottom: 0px;" name="comment-text">
+                                            {{comment.c_text}}
                                         </p>
                                     </span>
                                     <div class="container" style="padding: 0px; margin-bottom: 7.5px; margin-top: 5px;">
@@ -240,12 +242,74 @@
         </div>
     </div>
 
+
+    
+
+</div>
+<!-- Edit Comment Modal -->
+<div class="modal fade" id="commentModal" aria-labelledby="centermodal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Comment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="update-Comment-form" action="" >
+                  <input type="hidden" name="edit-comment-id" id="edit-comment-id">
+                  <div class="container">
+                    <label for="message-text" class="col-form-label">Comment:</label>
+                    <textarea class="form-control" name="edit-comment-text" id="edit-comment-text"></textarea>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+              </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- Delete comment Modal -->
+<div class="modal fade" id="DeleteCommentModal" aria-labelledby="centermodal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Comment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="delete-Comment-form">
+                    <div class="container" id="confirm-Delete-Comment">
+                        <input type="hidden" name="delete-comment-id" id="delete-comment-id">
+                        <label for="message-text" class="col-form-label">Comment:</label>
+                        <p name="delete-comment-text" id="delete-comment-text"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">DELETE</button>
+                    </div>
+                </form>
+             
+              
+            </div>
+            
+        </div>
+    </div>
 </div>
 {%endblock%}
 {% block javascript %}
 <script>
+    // var myModal = document.getElementById('CommentModal')
+    // var myInput = document.getElementById('getComment')
+
+    // myModal.addEventListener('shown.bs.modal', function () {
+    // myInput.focus()
+    // })
 
 console.log("Im in the javascript block")
+console.log("passed")
           /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
 function myFunction() {
@@ -258,20 +322,6 @@ function myFunction() {
          }
        }
 
-       // Close the dropdown menu if the user clicks outside of it
-       window.onclick = function(event) {
-         if (!event.target.matches('.dropbtn')) {
-           var dropdowns = document.getElementsByClassName("dropdown-content");
-           console.log(dropdowns)
-           var i;
-           for (i = 0; i < dropdowns.length; i++) {
-             var openDropdown = dropdowns[i];
-             if (openDropdown.classList.contains('show')) {
-               openDropdown.classList.remove('show');
-             }
-           }
-         }
-       }
 
        function my_Function() {
          var x = document.getElementById("reply_container");
@@ -332,11 +382,13 @@ function appendToCommentdiv(comment) {
                                     <span style=" margin-bottom: 0px;">
                                         <p style="margin: 0px;">
                                             ${comment.user}
-                                            {% if comment.user == user %}
-                                            <a href="" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a>
-                                            <a href=""><i class="bi bi-trash"></i></a>
-                                            {% endif %}
                                         </p>
+                                        {% if '${comment.user}' == user %}
+                                            <!-- <a href="#" onclick="editComment({{comment.id}})" data-bs-toggle="modal" data-bs-target="#CommentModal" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a> -->
+                                            <button type="button" class="btn btn-secondary" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment(${comment.id})" ><i class="bi bi-pencil"></i></button>
+                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment(${comment.id})"><i class="bi bi-trash"></i></button>
+                                            <!-- <a href="#"><i class="bi bi-trash"></i></a> -->
+                                        {% endif %}
                                         <p style="margin: 0px; font-size: 9px;">${comment.uploaded_date}</p>
                                         <p style=" margin-bottom: 0px;">
                                         ${comment.comment_text}
@@ -440,9 +492,104 @@ function appendToCommentdiv(comment) {
 }
 
 
+function editComment(id) {
+  if (id) {
+    sp_id = "#"+id+"-comment-span";
+    console.log(sp_id)
+    
+    comment = $(sp_id).find(".CommentText").text().trim();
+    console.log(id)
+    console.log(comment)
+    $('#edit-comment-id').val(id);
+    $('#edit-comment-text').val(comment);
+
+  }
+}
+
+function deleteComment(id){
+    if(id){
+        sp_id = "#"+id+"-comment-span";
+        console.log(sp_id)
+    
+        comment = $(sp_id).find(".CommentText").text().trim();
+        $('#delete-comment-id').val(id);
+        $('#delete-comment-text').text(comment);
+    }
+}
+
+$("form#update-Comment-form").submit(function() {
+    var idInput = $('input[name="edit-comment-id"]').val();
+    var commentInput = $('textarea[name="edit-comment-text"]').val().trim();
+    console.log(commentInput)
+    console.log(idInput)
+    if (commentInput) {
+        // Create Ajax Call
+        $.ajax({
+            url: '{% url "videos:update_comment" %}',
+            data: {
+                'id': idInput,
+                'comment': commentInput
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.comment) {
+                  updateToComment(data.comment);
+                }
+            }
+        });
+       } else {
+        alert("All fields must have a valid value.");
+    }
+    $('form#update-Comment-form').trigger("reset");
+    $('#commentModal').modal('hide');
+    return false;
+});
+
+
+$("form#delete-Comment-form").submit(function() {
+    var idInput = $('input[name="delete-comment-id"]').val();
+    console.log(idInput)
+    if (idInput) {
+        // Create Ajax Call
+        $.ajax({
+            url: '{% url "videos:delete_comment" %}',
+            data: {
+                'id': idInput
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.success_message) {
+                  $(".comment-reply-container").remove()
+                  console.log(data.success_message)
+                }
+            }
+        });
+       } else {
+        alert("All fields must have a valid value.");
+    }
+    $('form#delete-Comment-form').trigger("reset");
+    $('#DeleteCommentModal').modal('hide');
+    return false;
+});
 
 
 
+
+function updateToComment(comment){
+    console.log("inside updateToComment function")
+    $("#"+comment.id+"-comment-span").children("p").each(function() {
+        var attr = $(this).attr("name");
+        var attrs = $(this).text();
+        console.log(attrs)
+        if (attr == "comment-user") {
+          $(this).text(comment.user);
+        } else if (attr == "comment-date") {
+          $(this).text(comment.updated_date);
+        } else {
+          $(this).text(comment.comment_text);
+        }
+      });
+}
 
 
 

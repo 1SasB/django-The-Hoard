@@ -144,6 +144,7 @@ class VideoView(View):
         # print(comments)
         return render(request, self.template_name, context)
 
+
 class CreateComment(LoginRequiredMixin,View):
     def get(self,request):
         print("Inside Comment Create View")
@@ -166,6 +167,49 @@ class CreateComment(LoginRequiredMixin,View):
         }
 
         return JsonResponse(data)
+
+
+
+class UpdateComment(LoginRequiredMixin,View):
+    def get(self,request):
+        print("Inside Comment Update View")
+        comment_text = request.GET.get('comment',None)
+        print(comment_text)
+        comment_id = request.GET.get('id',None)
+        print(comment_id)
+        comment = get_object_or_404(Comment,pk=int(comment_id))
+        comment.c_text = comment_text
+        comment.save()
+        res_comment = {
+            'id': comment.id,
+            'comment_text': comment.c_text,
+            'updated_date': comment.date_updated,
+            'user': comment.user.username
+        }
+
+        data = {
+            'comment': res_comment
+        }
+
+        return JsonResponse(data)
+
+
+
+
+
+class DeleteComment(LoginRequiredMixin,View):
+    def get(self,request):
+        comment_id = request.GET.get('id',None)
+        comment = get_object_or_404(Comment,pk=int(comment_id))
+        comment_text = comment.c_text
+        comment.delete()
+
+        data = {
+            'success_message': 'You have succesfuly deleted comment'+"_"+comment_text[:35]
+        }
+
+        return JsonResponse(data)
+
 
 
 class CreateReply(LoginRequiredMixin,View):
