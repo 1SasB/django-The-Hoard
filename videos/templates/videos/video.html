@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 <div class="row g-5" >
@@ -86,125 +87,146 @@
                     <ul class="list-unstyled" id="comment-list">
                         {% if comments %}
                             
-                        <div class="comment-reply-container">
-                            {% for comment in comments %}
-                            <div class="comment-container" style="margin: 0px; padding: 0px;">
-                                <li>
-                                    <span style=" margin-bottom: 0px;" id="{{comment.id}}-comment-span">
-                                        <p style="margin: 0px;" name="comment-user" >
-                                            {{comment.user}}
-                                        </p>
-                                        {% if comment.user == user %}
-                                            <!-- <a href="#" onclick="editComment({{comment.id}})" data-bs-toggle="modal" data-bs-target="#CommentModal" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a> -->
-                                            <button type="button" class="btn btn-secondary" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment('{{comment.id}}')" ><i class="bi bi-pencil"></i></button>
-                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment('{{comment.id}}')"><i class="bi bi-trash"></i></button>
-                                            <!-- <a href="#"><i class="bi bi-trash"></i></a> -->
-                                        {% endif %}
-                                        <p style="margin: 0px; font-size: 9px;" name="comment-date" >{{comment.date_uploaded}}</p>
-                                        <p class="CommentText" style=" margin-bottom: 0px;" name="comment-text">
-                                            {{comment.c_text}}
-                                        </p>
-                                    </span>
-                                    <div class="container" style="padding: 0px; margin-bottom: 7.5px; margin-top: 5px;">
-                                        <!-- like button -->
-                                        <span class="fa-stack" style="vertical-align: middle;">
-                                            <i class="far fa-thumbs-up fa-stack-1x" style="padding-left: 0px;"></i>
-                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                    
-                                        </span>
-                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
-                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                    
-                                        </span>
-                                        <span>2.5K</span>
-                                        <!-- unlike button -->
-    
-                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                        </span>
-                                        <span class="fa-stack" style="vertical-align: middle;">
-                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                        </span>
-                                        <span>2.5K</span>
-                                        {% if request.user.is_authenticated%}
-                                        <a id="reply_btn" style="margin-left: 25px;" onclick="replyFunction(this)"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                        {% else %}
-                                        <a href="{% url 'login' %}?next={% url 'videos:video_detail' video.id %}" id="reply_btn" style="margin-left: 25px;" ><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                        {% endif %}
-                                        <a href="#" onclick="my_Function()" style="margin-left: 20px;">
-                                            View replys
-                                        </a> <!-- "onclick="my_Function()" href="#" style="margin-left: 20px;">View replys</a> -->
-                                
-                                    </div>
-                                    <div class="container" id="reply_form" style="display: none;">
-                                        <form action="">
-                                            <input class="form-control form-control-sm" type="text" name="Reply" placeholder="Type a reply" id="reply-input" >
-                                            <div style="margin-top: 8.5px;">
-                                                <button class="btn btn-secondary btn-sm" id="reply_btn">Submit</button>
-                                                <button class="btn btn-secondary btn-sm" onclick="replyFunction(this)" >Cancel</button>
-                                            </div>
-                                        </form>
-                                        
-                                        
-                                    </div>
-                                </li>
-                                
-                            </div>
-                                <ul class="list-unstyled" id="reply_container" style="margin-left: 20px; margin-right: 4.5px; display: none;">
-                                    <div class="container" style="margin: 0px; padding: 0px;">
-                                        <p style="margin: 0px;">
-                                            Benjamin Stilinski
-                                            <a href=""><i class="bi bi-pencil"></i></a>
-                                            <a href=""><i class="bi bi-trash"></i></a>
-                                        </p>
-                                        <p style="margin: 0px; font-size: 9px;"> 2 days ago</p>
-                                    </div>
-                                    <div class="container" style="margin: 0px; padding: 0px;">
-    
+                            <div class="comment-reply-container">
+                                {% for comment in comments %}
+                                    <div class="comment-container" style="margin: 0px; padding: 0px;">
                                         <li>
-                                        This is a reply from another person and things yh. this is a comment alright.
+                                            <span style=" margin-bottom: 0px;" id="{{comment.id}}-comment-span">
+                                                <p style="margin: 0px;" name="comment-user" >
+                                                    {{comment.user}}
+                                                </p>
+                                                {% if comment.user == user %}
+                                                    <!-- <a href="#" onclick="editComment({{comment.id}})" data-bs-toggle="modal" data-bs-target="#CommentModal" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a> -->
+                                                    <button type="button" class="btn btn-secondary" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment('{{comment.id}}')" ><i class="bi bi-pencil"></i></button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment('{{comment.id}}')"><i class="bi bi-trash"></i></button>
+                                                    <!-- <a href="#"><i class="bi bi-trash"></i></a> -->
+                                                {% endif %}
+                                                <p style="margin: 0px; font-size: 9px;" name="comment-date" >{{comment.date_uploaded|naturaltime }}</p>
+                                                <p class="CommentText" style=" margin-bottom: 0px;" name="comment-text">
+                                                    {{comment.c_text}}
+                                                </p>
+                                            </span>
+                                            <div class="container" style="padding: 0px; margin-bottom: 7.5px; margin-top: 5px;">
+                                                <!-- like button -->
+                                                <span class="fa-stack" style="vertical-align: middle;">
+                                                    <i class="far fa-thumbs-up fa-stack-1x" style="padding-left: 0px;"></i>
+                                                    <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                            
+                                                </span>
+                                                <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                    <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                                    <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                            
+                                                </span>
+                                                <span>2.5K</span>
+                                                <!-- unlike button -->
+            
+                                                <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                    <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                    <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                </span>
+                                                <span class="fa-stack" style="vertical-align: middle;">
+                                                    <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                    <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                </span>
+                                                <span>2.5K</span>
+                                                {% if request.user.is_authenticated%}
+                                                <a id="reply_btn" style="margin-left: 25px;" onclick="replyFunction('{{comment.id}}')"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                                {% else %}
+                                                <a href="{% url 'login' %}?next={% url 'videos:video_detail' video.id %}" id="reply_btn" style="margin-left: 25px;" ><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                                {% endif %}
+                                                <a onclick="my_Function('{{comment.id}}')" style="margin-left: 20px;">
+                                                    View replys
+                                                </a> <!-- "onclick="my_Function()" href="#" style="margin-left: 20px;">View replys</a> -->
+                                        
+                                            </div>
+                                            <div class="container" id="reply_form{{comment.id}}" style="display: none;">
+                                                <form action="" id="reply-form" name="reply-form">
+                                                    <input type="hidden" name="reply-comment-id" id="reply-comment-id{{comment.id}}" value="{{comment.id}}">
+                                                    <input class="form-control form-control-sm" type="text" name="reply-comment-input" placeholder="Type a reply" id="reply-comment-input{{comment.id}}" >
+                                                    <div style="margin-top: 8.5px;">
+                                                        <button type="submit" class="btn btn-secondary btn-sm" id="reply_btn">Submit</button>
+                                                        <button class="btn btn-secondary btn-sm" onclick="replyFunction('{{comment.id}}')" >Cancel</button>
+                                                    </div>
+                                                </form>
+                                                
+                                                
+                                            </div>
                                         </li>
-                                        <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
-                                    <!-- like button -->
-                                            <span class="fa-stack" style="vertical-align: middle;">
-                                                <i class="far fa-thumbs-up fa-stack-1x"></i>
-                                                <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                        
-                                            </span>
-                                            <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                                <i class="far fa-thumbs-up fa-stack-1x"></i>
-                                                <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                        
-                                            </span>
-                                            <span>2.5K</span>
-                                            <!-- unlike button -->
-    
-                                            <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                                <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                                <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                            </span>
-                                            <span class="fa-stack" style="vertical-align: middle;">
-                                                <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                                <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                            </span>
-                                            <span>2.5K</span>
-    
-    
-                                            <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                            <a href="#" style="margin-left: 20px;">View replys</a>
-                                        </div>
                                         
                                     </div>
-                                </ul>
-                            {% endfor %}
-                        </div>
+                                    
+                                        <div id="reply-container{{comment.id}}">
+                                            {% if comment.reply_set.all %}
+                                                <div id="reply_container{{comment.id}}" style="display: none;">
+                                                    
+                                                    <ul class="list-unstyled" id="Reply_container{{comment.id}}" style="margin-left: 20px; margin-right: 4.5px;">
+                                                        {% for reply in comment.reply_set.all %}
+                                                            <li id="container_reply_{{comment.id}}">
+                                                                <div class="container" style="margin: 0px; padding: 0px;">
+                                                                    <p style="margin: 0px;">
+                                                                        {{reply.user}}
+                                                                        <a href=""><i class="bi bi-pencil"></i></a>
+                                                                        <a href=""><i class="bi bi-trash"></i></a>
+                                                                    </p>
+                                                                    <p style="margin: 0px; font-size: 9px;">{{reply.date_uploaded|naturaltime}}</p>
+                                                                </div>
+                                                                <div class="container" style="margin: 0px; padding: 0px;">
+                                
+                                                                    <p>
+                                                                    {{reply.r_text}}
+                                                                    </p>
+                                                                    <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
+                                                                        <!-- like button -->
+                                                                        <span class="fa-stack" style="vertical-align: middle;">
+                                                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                                                    
+                                                                        </span>
+                                                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                                                    
+                                                                        </span>
+                                                                        <span>2.5K</span>
+                                                                        <!-- unlike button -->
+                                
+                                                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                                        </span>
+                                                                        <span class="fa-stack" style="vertical-align: middle;">
+                                                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                                        </span>
+                                                                        <span>2.5K</span>
+                                
+                                
+                                                                        <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                                                        <a href="#" style="margin-left: 20px;">View replys</a>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                    
+                                                </div>
+                                            {% else %}
+                                            <div id="reply_container{{comment.id}}" style="display: none;">
+                                                <h6>No replys here</h6>
+                                            </div>
+                                            {% endif %}  
+                                        </div>
+                                    
+                                    <hr>
+                                {% endfor %}
                             
-                        {% else %}
-                        <h6>--this---</h6>
+                            </div>
+
                         {% endif %}
+                            
+                        
                     </ul>
                     
                 </div>
@@ -298,7 +320,7 @@
         </div>
     </div>
 </div>
-{%endblock%}
+{% endblock %}
 {% block javascript %}
 <script>
     // var myModal = document.getElementById('CommentModal')
@@ -312,7 +334,7 @@ console.log("Im in the javascript block")
 console.log("passed")
           /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
-function myFunction() {
+function myFunction(id) {
          console.log("im in my_function")
          x = document.getElementById("myDropdown");
          if (x.style.display === "none") {
@@ -322,9 +344,11 @@ function myFunction() {
          }
        }
 
-
-       function my_Function() {
-         var x = document.getElementById("reply_container");
+       //im storing comment id in this global variable for later use in submiting a reply
+       var clicked_reply_comment_id = ''
+       function my_Function(id) {
+         var x = document.getElementById("reply_container"+id);
+         clicked_reply_comment_id = id;
          console.log("im in my_function")
          if (x.style.display === "none") {
            x.style.display = "block";
@@ -333,9 +357,10 @@ function myFunction() {
          }
        }
 
-       function replyFunction(x) {
-         console.log(x.id)
-         var x = document.getElementById("reply_form");
+       function replyFunction(id) {
+         console.log(id)
+         console.log(clicked_reply_comment_id) // testing global variable thingy
+         var x = document.getElementById("reply_form"+id);
          console.log("im in replyfunction")
          if (x.style.display === "none") {
            x.style.display = "block";
@@ -377,117 +402,141 @@ function myFunction() {
 function appendToCommentdiv(comment) {
   $("#comment-list").prepend(`
   <div class="comment-reply-container">
-                            <div class="comment-container" style="margin: 0px; padding: 0px;">
-                                <li>
-                                    <span style=" margin-bottom: 0px;">
-                                        <p style="margin: 0px;">
-                                            ${comment.user}
-                                        </p>
-                                        {% if '${comment.user}' == user %}
-                                            <!-- <a href="#" onclick="editComment({{comment.id}})" data-bs-toggle="modal" data-bs-target="#CommentModal" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a> -->
-                                            <button type="button" class="btn btn-secondary" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment(${comment.id})" ><i class="bi bi-pencil"></i></button>
-                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment(${comment.id})"><i class="bi bi-trash"></i></button>
-                                            <!-- <a href="#"><i class="bi bi-trash"></i></a> -->
-                                        {% endif %}
-                                        <p style="margin: 0px; font-size: 9px;">${comment.uploaded_date}</p>
-                                        <p style=" margin-bottom: 0px;">
-                                        ${comment.comment_text}
-                                        </p>
-                                    </span>
-                                    <div class="container" style="padding: 0px; margin-bottom: 7.5px; margin-top: 5px;">
-                                        <!-- like button -->
-                                        <span class="fa-stack" style="vertical-align: middle;">
-                                            <i class="far fa-thumbs-up fa-stack-1x" style="padding-left: 0px;"></i>
-                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                    
-                                        </span>
-                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
-                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                    
-                                        </span>
-                                        <span>2.5K</span>
-                                        <!-- unlike button -->
-    
-                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                        </span>
-                                        <span class="fa-stack" style="vertical-align: middle;">
-                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                        </span>
-                                        <span>2.5K</span>
-                                        {% if request.user.is_authenticated%}
-                                        <a id="reply_btn" style="margin-left: 25px;" onclick="replyFunction(this)"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                        {% else %}
-                                        <a href="{% url 'login' %}?next={% url 'videos:video_detail' video.id %}" id="reply_btn" style="margin-left: 25px;" ><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                        {% endif %}
-                                        <a href="#" onclick="my_Function()" style="margin-left: 20px;">
-                                            View replys
-                                        </a> <!-- "onclick="my_Function()" href="#" style="margin-left: 20px;">View replys</a> -->
-                                
-                                    </div>
-                                    <div class="container" id="reply_form" style="display: none;">
-                                        <form action="">
-                                            <input class="form-control form-control-sm" type="text" name="Reply" placeholder="Type a reply" id="reply-input" >
-                                            <div style="margin-top: 8.5px;">
-                                                <button class="btn btn-secondary btn-sm" id="reply_btn">Submit</button>
-                                                <button class="btn btn-secondary btn-sm" onclick="replyFunction(this)" >Cancel</button>
-                                            </div>
-                                        </form>
-                                        
-                                        
-                                    </div>
-                                </li>
-                                
-                            </div>
-                                <ul class="list-unstyled" id="reply_container" style="margin-left: 20px; margin-right: 4.5px; display: none;">
-                                    <div class="container" style="margin: 0px; padding: 0px;">
-                                        <p style="margin: 0px;">
-                                            Benjamin Stilinski
-                                            <i class="fas fa-ellipsis-v" style="float: right; margin-top: 4.5px;"></i>
-                                        </p>
-                                        <p style="margin: 0px; font-size: 9px;"> 2 days ago</p>
-                                    </div>
-                                    <div class="container" style="margin: 0px; padding: 0px;">
-    
+                                {% for comment in comments %}
+                                    <div class="comment-container" style="margin: 0px; padding: 0px;">
                                         <li>
-                                        This is a reply from another person and things yh. this is a comment alright.
+                                            <span style=" margin-bottom: 0px;" id="{{comment.id}}-comment-span">
+                                                <p style="margin: 0px;" name="comment-user" >
+                                                    ${comment.user}
+                                                </p>
+                                                {% if comment.user == user %}
+                                                    <!-- <a href="#" onclick="editComment({{comment.id}})" data-bs-toggle="modal" data-bs-target="#CommentModal" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a> -->
+                                                    <button type="button" class="btn btn-secondary" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment(${comment.id})" ><i class="bi bi-pencil"></i></button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment(${comment.id})"><i class="bi bi-trash"></i></button>
+                                                    <!-- <a href="#"><i class="bi bi-trash"></i></a> -->
+                                                {% endif %}
+                                                <p style="margin: 0px; font-size: 9px;" name="comment-date" >${comment.uploaded_date}</p>
+                                                <p class="CommentText" style=" margin-bottom: 0px;" name="comment-text">
+                                                    ${comment.comment_text}
+                                                </p>
+                                            </span>
+                                            <div class="container" style="padding: 0px; margin-bottom: 7.5px; margin-top: 5px;">
+                                                <!-- like button -->
+                                                <span class="fa-stack" style="vertical-align: middle;">
+                                                    <i class="far fa-thumbs-up fa-stack-1x" style="padding-left: 0px;"></i>
+                                                    <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                            
+                                                </span>
+                                                <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                    <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                                    <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                            
+                                                </span>
+                                                <span>2.5K</span>
+                                                <!-- unlike button -->
+            
+                                                <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                    <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                    <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                </span>
+                                                <span class="fa-stack" style="vertical-align: middle;">
+                                                    <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                    <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                </span>
+                                                <span>2.5K</span>
+                                                {% if request.user.is_authenticated%}
+                                                <a id="reply_btn" style="margin-left: 25px;" onclick="replyFunction(${comment.id})"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                                {% else %}
+                                                <a href="{% url 'login' %}?next={% url 'videos:video_detail' video.id %}" id="reply_btn" style="margin-left: 25px;" ><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                                {% endif %}
+                                                <a onclick="my_Function(${comment.id})" style="margin-left: 20px;">
+                                                    View replys
+                                                </a> <!-- "onclick="my_Function()" href="#" style="margin-left: 20px;">View replys</a> -->
+                                        
+                                            </div>
+                                            <div class="container" id="reply_form${comment.id}" style="display: none;">
+                                                <form action="" id="reply-form" name="reply-form">
+                                                    <input type="hidden" name="reply-comment-id" value="${comment.id}">
+                                                    <input class="form-control form-control-sm" type="text" name="reply-comment-input" placeholder="Type a reply" id="reply-comment-input${comment.id}" >
+                                                    <div style="margin-top: 8.5px;">
+                                                        <button type="submit" class="btn btn-secondary btn-sm" id="reply_btn">Submit</button>
+                                                        <button class="btn btn-secondary btn-sm" onclick="replyFunction(${comment.id})" >Cancel</button>
+                                                    </div>
+                                                </form>
+                                                
+                                                
+                                            </div>
                                         </li>
-                                        <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
-                                    <!-- like button -->
-                                            <span class="fa-stack" style="vertical-align: middle;">
-                                                <i class="far fa-thumbs-up fa-stack-1x"></i>
-                                                <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                        
-                                            </span>
-                                            <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                                <i class="far fa-thumbs-up fa-stack-1x"></i>
-                                                <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                        
-                                            </span>
-                                            <span>2.5K</span>
-                                            <!-- unlike button -->
-    
-                                            <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                                <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                                <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                            </span>
-                                            <span class="fa-stack" style="vertical-align: middle;">
-                                                <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                                <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                            </span>
-                                            <span>2.5K</span>
-    
-    
-                                            <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                            <a href="#" style="margin-left: 20px;">View replys</a>
-                                        </div>
                                         
                                     </div>
-                                </ul>
-                        </div>
+                                    
+                                        <div id="reply-container${comment.id}">
+                                            
+                                                <div id="reply_container${comment.id}" >
+                                                    {% if comment.reply_set.all %}
+                                                    <ul class="list-unstyled" id="Reply_container${comment.id}" style="margin-left: 20px; margin-right: 4.5px; display: none;">
+                                                        {% for reply in comment.reply_set.all %}
+                                                            <li id="container_reply_${comment.id}">
+                                                                <div class="container" style="margin: 0px; padding: 0px;">
+                                                                    <p style="margin: 0px;">
+                                                                        {{reply.user}}
+                                                                        <a href=""><i class="bi bi-pencil"></i></a>
+                                                                        <a href=""><i class="bi bi-trash"></i></a>
+                                                                    </p>
+                                                                    <p style="margin: 0px; font-size: 9px;">{{reply.date_uploaded|naturaltime}}</p>
+                                                                </div>
+                                                                <div class="container" style="margin: 0px; padding: 0px;">
+                                
+                                                                    <p>
+                                                                    {{reply.r_text}}
+                                                                    </p>
+                                                                    <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
+                                                                        <!-- like button -->
+                                                                        <span class="fa-stack" style="vertical-align: middle;">
+                                                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                                                    
+                                                                        </span>
+                                                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                                                    
+                                                                        </span>
+                                                                        <span>2.5K</span>
+                                                                        <!-- unlike button -->
+                                
+                                                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                                        </span>
+                                                                        <span class="fa-stack" style="vertical-align: middle;">
+                                                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                                        </span>
+                                                                        <span>2.5K</span>
+                                
+                                
+                                                                        <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                                                        <a href="#" style="margin-left: 20px;">View replys</a>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                    {% else %}
+                                                    <div id="reply_container${comment.id}" style="display: none;">
+                                                        <h6>No replys here</h6>
+                                                    </div>
+                                                    {% endif %}  
+                                                </div>
+                                            
+                                        </div>
+                                    
+                                    <hr>
+                                {% endfor %}
+                            
+                            </div>
     `);
 }
 
@@ -591,6 +640,93 @@ function updateToComment(comment){
       });
 }
 
+
+$('form#reply-form').submit(function(){
+    // var comment_id = $('input[name="reply-comment-id"]').val()
+    var attr_id = $(this).children('input:first-child').val()
+    console.log(attr_id)
+    var comment_id = attr_id
+    console.log("#reply-comment-input"+comment_id)
+    var reply_text = $("#reply-comment-input"+comment_id).val()
+    console.log(reply_text)
+    console.log(comment_id)
+    if(reply_text){
+        $.ajax({
+            url: '{% url "videos:create_reply" %}',
+            data: {
+                'comment_id': comment_id,
+                'reply': reply_text
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.reply) {
+                  console.log(data.reply.comment_id)
+                  appendToReplydiv(data.reply);
+                  
+                }
+            }
+        });
+    }else{
+        alert("All fields must have a valid value")
+    }
+    $('form#reply-form').trigger("reset");
+    return false;
+})
+
+// function ajxreply(){
+    
+// }
+
+function appendToReplydiv(reply){
+    $('#Reply_container'+reply.comment_id).append(`
+    <li id="container_reply_${reply.comment_id}">
+                                                                <div class="container" style="margin: 0px; padding: 0px;">
+                                                                    <p style="margin: 0px;">
+                                                                        ${reply.user}
+                                                                        <a href=""><i class="bi bi-pencil"></i></a>
+                                                                        <a href=""><i class="bi bi-trash"></i></a>
+                                                                    </p>
+                                                                    <p style="margin: 0px; font-size: 9px;">${reply.uploaded_date}</p>
+                                                                </div>
+                                                                <div class="container" style="margin: 0px; padding: 0px;">
+                                
+                                                                    <p>
+                                                                    ${reply.reply}
+                                                                    </p>
+                                                                    <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
+                                                                        <!-- like button -->
+                                                                        <span class="fa-stack" style="vertical-align: middle;">
+                                                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                                                    
+                                                                        </span>
+                                                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                                                    
+                                                                        </span>
+                                                                        <span>2.5K</span>
+                                                                        <!-- unlike button -->
+                                
+                                                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
+                                                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                                        </span>
+                                                                        <span class="fa-stack" style="vertical-align: middle;">
+                                                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
+                                                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                                                        </span>
+                                                                        <span>2.5K</span>
+                                
+                                
+                                                                        <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+                                                                        <a href="#" style="margin-left: 20px;">View replys</a>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </li>
+    `)
+}
 
 
 

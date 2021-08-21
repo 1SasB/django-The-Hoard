@@ -129,6 +129,15 @@ class VideoView(View):
         video_list = Video.objects.order_by('date_uploaded').exclude(id=id)[:3]
         video_by_id = get_object_or_404(Video,id=id)
         comments = Comment.objects.filter(video=video_by_id).order_by('-date_uploaded')
+
+        
+        for obj in comments:
+            reply = obj.reply_set.all()
+            if(reply):
+                print("true")
+            for rep in reply:
+                print(rep.id)
+
         context = { 'video': video_by_id, 
                     'video_list': video_list,
                     'comments': comments }
@@ -214,17 +223,20 @@ class DeleteComment(LoginRequiredMixin,View):
 
 class CreateReply(LoginRequiredMixin,View):
     def get(self,request):
-        c_reply = request.GET.get('comment',None)
-        comment_id = request.GET.get('vid_id',None)
+        print("Inside CreateReply View")
+
+        c_reply = request.GET.get('reply',None)
+        comment_id = request.GET.get('comment_id',None)
         comment = get_object_or_404(Comment,pk=comment_id)
         
 
-        reply_obj = Comment.objects.create(r_text=c_reply,comment=comment,user=request.user)
+        reply_obj = Reply.objects.create(r_text=c_reply,comment=comment,user=request.user)
         reply = {
-            'id': reply_obj.id,
+            'reply_id': reply_obj.id,
+            'comment_id': comment.id,
             'reply': reply_obj.r_text,
             'uploaded_date': reply_obj.date_uploaded,
-            'user': reply_obj.user
+            'user': reply_obj.user.username
         }
 
         data = {
