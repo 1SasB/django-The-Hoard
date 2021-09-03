@@ -214,6 +214,7 @@ class DeleteComment(LoginRequiredMixin,View):
         comment.delete()
 
         data = {
+            'comment_id': comment_id,
             'success_message': 'You have succesfuly deleted comment'+"_"+comment_text[:35]
         }
 
@@ -241,6 +242,48 @@ class CreateReply(LoginRequiredMixin,View):
 
         data = {
             'reply': reply
+        }
+
+        return JsonResponse(data)
+
+
+class UpdateReply(LoginRequiredMixin,View):
+    def get(self,request):
+        print("Inside Reply Update View")
+        reply_text = request.GET.get('reply',None)
+        print(reply_text)
+        reply_id = request.GET.get('id',None)
+        print(reply_id)
+        reply = get_object_or_404(Reply,pk=int(reply_id))
+        reply.r_text = reply_text
+        reply.save()
+        res_reply = {
+            'id': reply.id,
+            'reply_text': reply.r_text,
+            'updated_date': reply.date_updated,
+            'user': reply.user.username
+        }
+
+        data = {
+            'comment': res_reply
+        }
+
+        return JsonResponse(data)
+
+
+
+
+
+class DeleteReply(LoginRequiredMixin,View):
+    def get(self,request):
+        reply_id = request.GET.get('id',None)
+        reply = get_object_or_404(Comment,pk=int(reply_id))
+        reply_text = reply.r_text
+        reply.delete()
+
+        data = {
+            'comment_id': reply_id,
+            'success_message': 'You have succesfuly deleted comment'+"_"+reply_text[:35]
         }
 
         return JsonResponse(data)

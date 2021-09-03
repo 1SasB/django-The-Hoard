@@ -1,23 +1,50 @@
 {% extends 'base.html' %}
-{% load static %}
 {% load humanize %}
 
 {% block content %}
-<div class="row g-5" >
-    <div class="col-md-8" style="padding-right:0xp;">
-        <div class="card">
-            <video width="100%" height="auto" controls autoplay>
+
+<div class="row" >
+    <div class="col-md-8" style="padding-right:12px;">
+        
+        <div class="card" style="background-color: #424242;">
+            <video width="100%" height="auto" poster="http://unsplash.it/650/250?" controls autoplay>
                 <source src="{{ video.path.url }}" type="video/mp4">
                   Your browser does not support the video tag.
+            </video>
+            <!-- <div class="image-fluid" style="width: 100%;">
+                <video
+                    style="object-fit: fill;"
+                    id="my-video"
+                    class="video-js vjs-theme-sea vjs-big-play-centered"
+                    controls
+                    preload="auto"
+                    width="100%"
+                    height="auto"
+                    poster=""
+                    data-setup="{}">
+                    <source src="{{ video.path.url }}" type="video/mp4" />
+                    <source src="MY_VIDEO.webm" type="video/webm" />
+                    <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank"
+                        >supports HTML5 video</a
+                    >
+                    </p>
                 </video>
+            </div> -->
+                
+           
+            
             <div class="card-body" >
+                
                 <div class="container" style="padding: 0.4px; margin-bottom: 3px;">
                     
                     <!-- <img src="mypic.jpg" style="width: 750px; height: 480px;"> -->
-                    <h4 style="margin-top: 10px;">{{video.title}}</h4>
+                    <h4 style="margin-top: 10px; color: #fff; font-weight: 500;">{{video.title}}</h4>
                     <div class="container" style="padding-left: 0px; display: flex;">
                         <div>
-                            <p style="margin: 0px;">456,455 views . Feb 25,2020</p>
+                            <p style="margin: 0px; color: #fff;">456,455 views . Feb 25,2020</p>
                         </div>
                         
                                     <div style="margin-left: 25px;">
@@ -31,7 +58,7 @@
                                         <i class="fas fa-thumbs-up fa-stack-1x"></i>
                 
                                     </span>
-                                    <span>2.5K</span>
+                                    <span style="color: #fff;">2.5K</span>
                                     <!-- unlike button -->
 
                                     <span class="fa-stack" style="vertical-align: middle; display: none;">
@@ -42,18 +69,18 @@
                                         <i class="far fa-thumbs-down fa-stack-1x"></i>
                                         <i class="fas fa-thumbs-down fa-stack-1x"></i>
                                     </span>
-                                    <span>2.5K</span>
+                                    <span style="color: #fff;">2.5K</span>
                                     </div>
 
                     </div>
                     <hr style="margin-top: 0px;">
                     <div class="container" style="padding-left: 0px;">
                         <div class="container" style="padding-left: 0px; margin-bottom: 20px;" >
-                            <h6>
+                            <h6 style="color: #fff; font-weight: 500;">
                                 {{video.hord}}
                             </h6>
                         </div>
-                        <p>
+                        <p style="color: #fff; font-weight: 500;">
                             {{video.description}}
                             
                         </p>
@@ -69,9 +96,9 @@
             </div>
         </div>
         <hr>
-        <div class="card">
+        <div class="card" style="background-color:#424242;">
             <div class="card-body" >
-                <h4>Comments</h4>
+                <h4 style="color: #fff; font-weight: 500;">Comments</h4>
                 <div class="container" id="comment_form" style="padding: 0px">
                     <form id="comment-form" action="">
                         <input  type="text" name="comment-text" id="comment-input" placeholder="Type a comment" >
@@ -82,27 +109,50 @@
                         </div>
                     </form>
                 </div>
+                <!-- <div>
+                    <div class="form-outline mb-4">
+                        <textarea
+                          class="form-control"
+                          id="form4Example3"
+                          rows="4"
+                        ></textarea>
+                        <label
+                          class="form-label"
+                          for="form4Example3"
+                          style="margin-left: 0px"
+                          >Message</label
+                        >
+                        <div class="form-notch">
+                          <div class="form-notch-leading" style="width: 9px"></div>
+                          <div class="form-notch-middle" style="width: 60px"></div>
+                          <div class="form-notch-trailing"></div>
+                        </div>
+                      </div>
+                </div> -->
                 <hr>
-                <div class="container" style="padding: 0 4px; margin-bottom: 3px;">
+                <div class="container" style="padding: 0 4px; margin-bottom: 3px;" >
                     <ul class="list-unstyled" id="comment-list">
-                        {% if comments %}
+                        
                             
-                            <div class="comment-reply-container">
+                            
+                                {% if comments %}
                                 {% for comment in comments %}
-                                    <div class="comment-container" style="margin: 0px; padding: 0px;">
-                                        <li>
+                                        <li class="comment-container{{comment.id}}" style="margin: 0px; padding: 0px;">
                                             <span style=" margin-bottom: 0px;" id="{{comment.id}}-comment-span">
-                                                <p style="margin: 0px;" name="comment-user" >
+                                                <p style="margin: 0px; color: #fff;" name="comment-user" >
                                                     {{comment.user}}
                                                 </p>
                                                 {% if comment.user == user %}
                                                     <!-- <a href="#" onclick="editComment({{comment.id}})" data-bs-toggle="modal" data-bs-target="#CommentModal" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a> -->
-                                                    <button type="button" class="btn btn-secondary" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment('{{comment.id}}')" ><i class="bi bi-pencil"></i></button>
-                                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment('{{comment.id}}')"><i class="bi bi-trash"></i></button>
+                                                    <!-- <button type="button" class="btn btn-secondary" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment('{{comment.id}}')" ><i class="bi bi-pencil"></i></button> -->
+                                                    <!-- <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment('{{comment.id}}')"><i class="bi bi-trash"></i></button> -->
+
+                                                    <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment('{{comment.id}}')" ><i class="bi bi-pencil"></i></a>
+                                                    <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment('{{comment.id}}')"><i class="bi bi-trash"></i></a>
                                                     <!-- <a href="#"><i class="bi bi-trash"></i></a> -->
                                                 {% endif %}
                                                 <p style="margin: 0px; font-size: 9px;" name="comment-date" >{{comment.date_uploaded|naturaltime }}</p>
-                                                <p class="CommentText" style=" margin-bottom: 0px;" name="comment-text">
+                                                <p class="CommentText" style=" margin-bottom: 0px; color: #fff;" name="comment-text">
                                                     {{comment.c_text}}
                                                 </p>
                                             </span>
@@ -135,7 +185,7 @@
                                                 {% else %}
                                                 <a href="{% url 'login' %}?next={% url 'videos:video_detail' video.id %}" id="reply_btn" style="margin-left: 25px;" ><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
                                                 {% endif %}
-                                                <a onclick="my_Function('{{comment.id}}')" style="margin-left: 20px;">
+                                                <a onclick="my_Function('{{comment.id}}')" style="margin-left: 20px; color: #fff;">
                                                     View replys
                                                 </a> <!-- "onclick="my_Function()" href="#" style="margin-left: 20px;">View replys</a> -->
                                         
@@ -146,34 +196,32 @@
                                                     <input class="form-control form-control-sm" type="text" name="reply-comment-input" placeholder="Type a reply" id="reply-comment-input{{comment.id}}" >
                                                     <div style="margin-top: 8.5px;">
                                                         <button type="submit" class="btn btn-secondary btn-sm" id="reply_btn">Submit</button>
-                                                        <button class="btn btn-secondary btn-sm" onclick="replyFunction('{{comment.id}}')" >Cancel</button>
+                                                        <a class="btn btn-secondary btn-sm" type="reset" onclick="replyFunction('{{comment.id}}')" >Cancel</a>
                                                     </div>
                                                 </form>
                                                 
                                                 
                                             </div>
-                                        </li>
-                                        
-                                    </div>
-                                    
-                                        <div id="reply-container{{comment.id}}">
-                                            {% if comment.reply_set.all %}
+
+                                            <div id="reply-container{{comment.id}}">
+                                            
                                                 <div id="reply_container{{comment.id}}" style="display: none;">
                                                     
                                                     <ul class="list-unstyled" id="Reply_container{{comment.id}}" style="margin-left: 20px; margin-right: 4.5px;">
+                                                        {% if comment.reply_set.all %}
                                                         {% for reply in comment.reply_set.all %}
                                                             <li id="container_reply_{{comment.id}}">
                                                                 <div class="container" style="margin: 0px; padding: 0px;">
                                                                     <p style="margin: 0px;">
                                                                         {{reply.user}}
-                                                                        <a href=""><i class="bi bi-pencil"></i></a>
-                                                                        <a href=""><i class="bi bi-trash"></i></a>
+                                                                        <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editReply('{{reply.id}}')" ><i class="bi bi-pencil"></i></a>
+                                                                        <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteReply('{{reply.id}}')"><i class="bi bi-trash"></i></a>
                                                                     </p>
                                                                     <p style="margin: 0px; font-size: 9px;">{{reply.date_uploaded|naturaltime}}</p>
                                                                 </div>
-                                                                <div class="container" style="margin: 0px; padding: 0px;">
+                                                                <div class="container" id="{{reply.id}}-reply-container" style="margin: 0px; padding: 0px;">
                                 
-                                                                    <p>
+                                                                    <p class="ReplyText">
                                                                     {{reply.r_text}}
                                                                     </p>
                                                                     <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
@@ -209,22 +257,25 @@
                                                                 </div>
                                                             </li>
                                                         {% endfor %}
+                                                        {% else %}
+                                                        <li id="container_reply_{{comment.id}}">
+                                                            <h6>No replys here</h6>
+                                                        </li>
+                                                        {% endif %}  
                                                     </ul>
                                                     
                                                 </div>
-                                            {% else %}
-                                            <div id="reply_container{{comment.id}}" style="display: none;">
-                                                <h6>No replys here</h6>
+                                            
                                             </div>
-                                            {% endif %}  
-                                        </div>
+                                            <hr>
+                                        </li>
+                                        
+                                        
                                     
-                                    <hr>
                                 {% endfor %}
-                            
-                            </div>
+                                {% endif %}
 
-                        {% endif %}
+                        
                             
                         
                     </ul>
@@ -234,13 +285,13 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4" >
+    <div class="col-md-4" style="padding: 0;">
         <div class="row" >
             
             <div class="col" >
                 {% for video in video_list %}
-                <div class="card" style="margin: 0px;">
-                    <img class="thumbnail-image" src="http://unsplash.it/250/110?gravity=center" alt="">
+                <div class="card" style="margin: 0px; background-color: #424242; width: auto;">
+                    <img class="thumbnail-image" src="http://unsplash.it/650/250?random={{video.id}}" alt="">
                 <div class="card-body" style="margin: 0px;" >
                     <!-- <div class="container" style="margin: 0px 0px 3px 0px;">
                         <a href="{% url 'videos:video_detail' video.id %}" class="thumbnail" video-duration="12:15">
@@ -273,14 +324,14 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
         <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Edit Comment</h5>
+              <h5 class="modal-title" id="edit-comment-reply-modal-title"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <form id="update-Comment-form" action="" >
                   <input type="hidden" name="edit-comment-id" id="edit-comment-id">
                   <div class="container">
-                    <label for="message-text" class="col-form-label">Comment:</label>
+                    <label for="message-text" class="col-form-label" id="edit-modal-message-text"></label>
                     <textarea class="form-control" name="edit-comment-text" id="edit-comment-text"></textarea>
                   </div>
                   <div class="modal-footer">
@@ -298,14 +349,14 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
         <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Delete Comment</h5>
+              <h5 class="modal-title" id="delete-comment-reply-modal-title"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="" id="delete-Comment-form">
                     <div class="container" id="confirm-Delete-Comment">
                         <input type="hidden" name="delete-comment-id" id="delete-comment-id">
-                        <label for="message-text" class="col-form-label">Comment:</label>
+                        <label for="message-text" class="col-form-label" id="delete-modal-message-text"></label>
                         <p name="delete-comment-text" id="delete-comment-text"></p>
                     </div>
                     <div class="modal-footer">
@@ -322,6 +373,7 @@
 </div>
 {% endblock %}
 {% block javascript %}
+<script src="https://vjs.zencdn.net/7.14.3/video.min.js"></script>
 <script>
     // var myModal = document.getElementById('CommentModal')
     // var myInput = document.getElementById('getComment')
@@ -344,11 +396,9 @@ function myFunction(id) {
          }
        }
 
-       //im storing comment id in this global variable for later use in submiting a reply
-       var clicked_reply_comment_id = ''
+       
        function my_Function(id) {
          var x = document.getElementById("reply_container"+id);
-         clicked_reply_comment_id = id;
          console.log("im in my_function")
          if (x.style.display === "none") {
            x.style.display = "block";
@@ -359,7 +409,6 @@ function myFunction(id) {
 
        function replyFunction(id) {
          console.log(id)
-         console.log(clicked_reply_comment_id) // testing global variable thingy
          var x = document.getElementById("reply_form"+id);
          console.log("im in replyfunction")
          if (x.style.display === "none") {
@@ -401,21 +450,16 @@ function myFunction(id) {
 
 function appendToCommentdiv(comment) {
   $("#comment-list").prepend(`
-  <div class="comment-reply-container">
-                                {% for comment in comments %}
-                                    <div class="comment-container" style="margin: 0px; padding: 0px;">
-                                        <li>
-                                            <span style=" margin-bottom: 0px;" id="{{comment.id}}-comment-span">
+  <li class="comment-container${comment.id}" style="margin: 0px; padding: 0px;">
+                                            <span style=" margin-bottom: 0px;" id="${comment.id}-comment-span">
                                                 <p style="margin: 0px;" name="comment-user" >
                                                     ${comment.user}
                                                 </p>
-                                                {% if comment.user == user %}
                                                     <!-- <a href="#" onclick="editComment({{comment.id}})" data-bs-toggle="modal" data-bs-target="#CommentModal" style="margin-right: 10px; margin-left: 10px;"><i class="bi bi-pencil"></i></a> -->
-                                                    <button type="button" class="btn btn-secondary" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment(${comment.id})" ><i class="bi bi-pencil"></i></button>
-                                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment(${comment.id})"><i class="bi bi-trash"></i></button>
+                                                    <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment(${comment.id})" ><i class="bi bi-pencil"></i></a>
+                                                    <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment(${comment.id})"><i class="bi bi-trash"></i></a>
                                                     <!-- <a href="#"><i class="bi bi-trash"></i></a> -->
-                                                {% endif %}
-                                                <p style="margin: 0px; font-size: 9px;" name="comment-date" >${comment.uploaded_date}</p>
+                                                <p style="margin: 0px; font-size: 9px;" name="comment-date" >${comment.uploaded_date }</p>
                                                 <p class="CommentText" style=" margin-bottom: 0px;" name="comment-text">
                                                     ${comment.comment_text}
                                                 </p>
@@ -456,7 +500,7 @@ function appendToCommentdiv(comment) {
                                             </div>
                                             <div class="container" id="reply_form${comment.id}" style="display: none;">
                                                 <form action="" id="reply-form" name="reply-form">
-                                                    <input type="hidden" name="reply-comment-id" value="${comment.id}">
+                                                    <input type="hidden" name="reply-comment-id" id="reply-comment-id${comment.id}" value="${comment.id}">
                                                     <input class="form-control form-control-sm" type="text" name="reply-comment-input" placeholder="Type a reply" id="reply-comment-input${comment.id}" >
                                                     <div style="margin-top: 8.5px;">
                                                         <button type="submit" class="btn btn-secondary btn-sm" id="reply_btn">Submit</button>
@@ -466,77 +510,20 @@ function appendToCommentdiv(comment) {
                                                 
                                                 
                                             </div>
-                                        </li>
-                                        
-                                    </div>
-                                    
-                                        <div id="reply-container${comment.id}">
+
+                                            <div id="reply-container${comment.id}">
                                             
-                                                <div id="reply_container${comment.id}" >
-                                                    {% if comment.reply_set.all %}
-                                                    <ul class="list-unstyled" id="Reply_container${comment.id}" style="margin-left: 20px; margin-right: 4.5px; display: none;">
-                                                        {% for reply in comment.reply_set.all %}
-                                                            <li id="container_reply_${comment.id}">
-                                                                <div class="container" style="margin: 0px; padding: 0px;">
-                                                                    <p style="margin: 0px;">
-                                                                        {{reply.user}}
-                                                                        <a href=""><i class="bi bi-pencil"></i></a>
-                                                                        <a href=""><i class="bi bi-trash"></i></a>
-                                                                    </p>
-                                                                    <p style="margin: 0px; font-size: 9px;">{{reply.date_uploaded|naturaltime}}</p>
-                                                                </div>
-                                                                <div class="container" style="margin: 0px; padding: 0px;">
-                                
-                                                                    <p>
-                                                                    {{reply.r_text}}
-                                                                    </p>
-                                                                    <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
-                                                                        <!-- like button -->
-                                                                        <span class="fa-stack" style="vertical-align: middle;">
-                                                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
-                                                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+                                                <div id="reply_container${comment.id}" style="display: none;">
                                                     
-                                                                        </span>
-                                                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                                                            <i class="far fa-thumbs-up fa-stack-1x"></i>
-                                                                            <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                                                    
-                                                                        </span>
-                                                                        <span>2.5K</span>
-                                                                        <!-- unlike button -->
-                                
-                                                                        <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                                                        </span>
-                                                                        <span class="fa-stack" style="vertical-align: middle;">
-                                                                            <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                                                            <i class="fas fa-thumbs-down fa-stack-1x"></i>
-                                                                        </span>
-                                                                        <span>2.5K</span>
-                                
-                                
-                                                                        <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                                                        <a href="#" style="margin-left: 20px;">View replys</a>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                            </li>
-                                                        {% endfor %}
+                                                    <ul class="list-unstyled" id="Reply_container${comment.id}" style="margin-left: 20px; margin-right: 4.5px;">
+                                                        <li style="display: none;"></li>
                                                     </ul>
-                                                    {% else %}
-                                                    <div id="reply_container${comment.id}" style="display: none;">
-                                                        <h6>No replys here</h6>
-                                                    </div>
-                                                    {% endif %}  
+                                                    
                                                 </div>
                                             
-                                        </div>
-                                    
-                                    <hr>
-                                {% endfor %}
-                            
-                            </div>
+                                            </div>
+                                            <hr>
+                                        </li>
     `);
 }
 
@@ -549,6 +536,8 @@ function editComment(id) {
     comment = $(sp_id).find(".CommentText").text().trim();
     console.log(id)
     console.log(comment)
+    $('#edit-comment-reply-modal-title').text("EDIT COMMENT")
+    $('#edit-modal-message-text').text("Comment:")
     $('#edit-comment-id').val(id);
     $('#edit-comment-text').val(comment);
 
@@ -561,6 +550,8 @@ function deleteComment(id){
         console.log(sp_id)
     
         comment = $(sp_id).find(".CommentText").text().trim();
+        $('#delete-comment-reply-modal-title').text("DELETE COMMENT")
+        $('#delete-modal-message-text').text("Comment:")
         $('#delete-comment-id').val(id);
         $('#delete-comment-text').text(comment);
     }
@@ -608,7 +599,7 @@ $("form#delete-Comment-form").submit(function() {
             dataType: 'json',
             success: function (data) {
                 if (data.success_message) {
-                  $(".comment-reply-container").remove()
+                  $(".comment-container"+data.comment_id).remove()
                   console.log(data.success_message)
                 }
             }
@@ -640,13 +631,14 @@ function updateToComment(comment){
       });
 }
 
+// Reply ajax fuunctions
+
 
 $('form#reply-form').submit(function(){
     // var comment_id = $('input[name="reply-comment-id"]').val()
     var attr_id = $(this).children('input:first-child').val()
     console.log(attr_id)
     var comment_id = attr_id
-    console.log("#reply-comment-input"+comment_id)
     var reply_text = $("#reply-comment-input"+comment_id).val()
     console.log(reply_text)
     console.log(comment_id)
@@ -681,16 +673,16 @@ function appendToReplydiv(reply){
     $('#Reply_container'+reply.comment_id).append(`
     <li id="container_reply_${reply.comment_id}">
                                                                 <div class="container" style="margin: 0px; padding: 0px;">
-                                                                    <p style="margin: 0px;">
+                                                                    <p style="margin: 0px;" name="reply-user">
                                                                         ${reply.user}
-                                                                        <a href=""><i class="bi bi-pencil"></i></a>
-                                                                        <a href=""><i class="bi bi-trash"></i></a>
+                                                                        <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editReply(${reply.id})" ><i class="bi bi-pencil"></i></a>
+                                                                        <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteReply(${reply.id})"><i class="bi bi-trash"></i></a>
                                                                     </p>
-                                                                    <p style="margin: 0px; font-size: 9px;">${reply.uploaded_date}</p>
+                                                                    <p style="margin: 0px; font-size: 9px;" name="reply-date">${reply.uploaded_date}</p>
                                                                 </div>
-                                                                <div class="container" style="margin: 0px; padding: 0px;">
+                                                                <div class="container" id="${reply.id}-reply-container" style="margin: 0px; padding: 0px;">
                                 
-                                                                    <p>
+                                                                    <p class="ReplyText">
                                                                     ${reply.reply}
                                                                     </p>
                                                                     <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
@@ -727,6 +719,113 @@ function appendToReplydiv(reply){
                                                             </li>
     `)
 }
+
+
+
+
+function editReply(id) {
+  if (id) {
+    sp_id = "#"+id+"-reply-container";
+    console.log(sp_id)
+    
+    comment = $(sp_id).find(".ReplyText").text().trim();
+    console.log(id)
+    console.log(comment)
+    $('#edit-comment-reply-modal-title').text("EDIT REPLY")
+    $('#edit-modal-message-text').text("Reply:")
+    $('#edit-comment-id').val(id);
+    $('#edit-comment-text').val(comment);
+
+  }
+}
+
+function deleteReply(id){
+    if(id){
+        sp_id = "#"+id+"-reply-container";
+        console.log(sp_id)
+    
+        comment = $(sp_id).find(".ReplyText").text().trim();
+        $('#delete-comment-reply-modal-title').text("DELETE REPLY")
+        $('#delete-modal-message-text').text("Reply:")
+        $('#delete-comment-id').val(id);
+        $('#delete-comment-text').text(comment);
+    }
+}
+
+$("form#update-Comment-form").submit(function() {
+    var idInput = $('input[name="edit-comment-id"]').val();
+    var commentInput = $('textarea[name="edit-comment-text"]').val().trim();
+    console.log(commentInput)
+    console.log(idInput)
+    if (commentInput) {
+        // Create Ajax Call
+        $.ajax({
+            url: '{% url "videos:update_reply" %}',
+            data: {
+                'id': idInput,
+                'reply': commentInput
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.reply) {
+                  updateToReply(data.reply);
+                }
+            }
+        });
+       } else {
+        alert("All fields must have a valid value.");
+    }
+    $('form#update-Reply-form').trigger("reset");
+    $('#commentModal').modal('hide');
+    return false;
+});
+
+function updateToReply(reply){
+    console.log("inside updateToComment function")
+    $("#"+reply.id+"-reply-container").children("p").each(function() {
+        var attr = $(this).attr("name");
+        var attrs = $(this).text();
+        console.log(attrs)
+        if (attr == "reply-user") {
+          $(this).text(reply.user);
+        } else if (attr == "comment-date") {
+          $(this).text(reply.updated_date);
+        } else {
+          $(this).text(reply.reply_text);
+        }
+      });
+}
+
+
+$("form#delete-Comment-form").submit(function() {
+    var idInput = $('input[name="delete-comment-id"]').val();
+    console.log(idInput)
+    if (idInput) {
+        // Create Ajax Call
+        $.ajax({
+            url: '{% url "videos:delete_reply" %}',
+            data: {
+                'id': idInput
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.success_message) {
+                  $(".comment-container"+data.comment_id).remove()
+                  console.log(data.success_message)
+                }
+            }
+        });
+       } else {
+        alert("All fields must have a valid value.");
+    }
+    $('form#delete-Reply-form').trigger("reset");
+    $('#DeleteCommentModal').modal('hide');
+    return false;
+});
+
+
+
+
 
 
 
