@@ -51,56 +51,61 @@
                             <p style="margin: 0px; color: #fff;">456,455 views . Feb 25,2020</p>
                         </div>
                                     {% if request.user.is_authenticated %}
-                                    <div style="margin-left: 25px;">
-                                    <a href="#" onclick="likeVid('{% url 'videos:video_unlike' video.id %}','{{ video.id }}','0'); return false;" 
-                                        {% if video.id not in video_likes %} style="display: none;" {% endif %}
-                                        id="like_btn_{{video.id}}"
-                                    >
-                                        <span class="fa-stack" style="vertical-align: middle;">
-                                            <i class="fa fa-thumbs-up fa-stack-1x" style="padding-left: 0px; color: blue;"></i>
-                                            <i class="fa fa-thumbs-o-up fa-stack-1x" style="display: none; color: white;" ></i>
-                                        </span>
-                                    </a>
-                                    
-                                    <a href="#" onclick="likeVid('{% url 'videos:video_like' video.id %}','{{ video.id }}','1'); return false;" 
-                                        {% if video.id in video_likes %} style="display: none;" {% endif %}
-                                        id="unlike_btn_{{video.id}}"
-                                    >
-                                        <span class="fa-stack" style="vertical-align: middle;">
-                                            <i class="fa fa-thumbs-up fa-stack-1x" style="display: none; color: blue;"></i>
-                                            <i class="fa fa-thumbs-o-up fa-stack-1x" style="color: white;"></i>
-                    
-                                        </span>
-                    
-                                    </a>
-                                    
-                                    <span id="like_count" style="color: #fff;">{{like_count}}</span>
+                                    <div style="margin-left: 25px; display: flex;">
+                                        <div style="margin-right: 15px;">
+                                            <a href="#" onclick="likeVid('{% url 'videos:video_unlike' video.id %}','{{ video.id }}','0'); return false;" 
+                                            {% if video.id not in video_likes %} style="display: none;" {% else %} style="text-decoration: none;" {% endif %}
+                                            id="like_btn_{{video.id}}"
+                                        >
+                                            <span class="fa-stack" style="vertical-align: middle;">
+                                                <i class="fa fa-thumbs-up fa-stack-1x" style="padding-left: 0px; color: blue;"></i>
+                                                <i class="fa fa-thumbs-o-up fa-stack-1x" style="display: none; color: white;" ></i>
+                                            </span>
+                                            </a>
+                                        
+                                            <a href="#" onclick="likeVid('{% url 'videos:video_like' video.id %}','{{ video.id }}','1'); return false;" 
+                                                {% if video.id in video_likes %} style="display: none;" {% else %} style="text-decoration: none;" {% endif %}
+                                                id="unlike_btn_{{video.id}}"
+                                            >
+                                                <span class="fa-stack" style="vertical-align: middle;">
+                                                    <i class="fa fa-thumbs-up fa-stack-1x" style="display: none; color: blue;"></i>
+                                                    <i class="fa fa-thumbs-o-up fa-stack-1x" style="color: white;"></i>
+                            
+                                                </span>
+                            
+                                            </a>
+                                        
+                                            <span id="like_count" style="color: #fff;">{{like_count}}</span>
+                                        </div>
+                                        
 
 
-                                    <!-- unlike button -->
-
-                                    <a href="#" onclick="dislikeVid('{% url 'videos:video_undislike' video.id %}','{{ video.id }}','0'); return false;" 
-                                        {% if video.id not in video_dislikes %} style="display: none;" {% endif %}
-                                        id="dislike_btn_{{video.id}}"
-                                    >
-                                        <span class="fa-stack" style="vertical-align: middle;">
-                                            <i class="fa fa-thumbs-down fa-stack-1x" style="padding-left: 0px; color: red;"></i>
-                                            <i class="fa fa-thumbs-o-down fa-stack-1x" style="display: none; color: white;" ></i>
-                                        </span>
-                                    </a>
-                                    
-                                    <a href="#" onclick="dislikeVid('{% url 'videos:video_dislike' video.id %}','{{ video.id }}','1'); return false;" 
-                                        {% if video.id in video_dislikes %} style="display: none;" {% endif %}
-                                        id="undislike_btn_{{video.id}}"
-                                    >
-                                        <span class="fa-stack" style="vertical-align: middle;">
-                                            <i class="fa fa-thumbs-down fa-stack-1x" style="display: none; color: red;"></i>
-                                            <i class="fa fa-thumbs-o-down fa-stack-1x" style="color: white;"></i>
-                    
-                                        </span>
-                    
-                                    </a>
-                                    <span id="dislike_count" style="color: #fff;">{{dislike_count}}</span>
+                                        <!-- Dislike button -->
+                                        <div>
+                                            <a href="#" onclick="dislikeVid('{% url 'videos:video_undislike' video.id %}','{{ video.id }}','0'); return false;" 
+                                            {% if video.id not in video_dislikes %} style="display: none;" {% else %} style="text-decoration: none;" {% endif %}
+                                            id="dislike_btn_{{video.id}}"
+                                            >
+                                            <span class="fa-stack" style="vertical-align: middle;">
+                                                <i class="fa fa-thumbs-down fa-stack-1x" style="padding-left: 0px; color: red;"></i>
+                                                <i class="fa fa-thumbs-o-down fa-stack-1x" style="display: none; color: white;" ></i>
+                                            </span>
+                                            </a>
+                                        
+                                            <a href="#" onclick="dislikeVid('{% url 'videos:video_dislike' video.id %}','{{ video.id }}','1'); return false;" 
+                                                {% if video.id in video_dislikes %} style="display: none;" {% else %} style="text-decoration: none;" {% endif %}
+                                                id="undislike_btn_{{video.id}}"
+                                            >
+                                                <span class="fa-stack" style="vertical-align: middle;">
+                                                    <i class="fa fa-thumbs-down fa-stack-1x" style="display: none; color: red;"></i>
+                                                    <i class="fa fa-thumbs-o-down fa-stack-1x" style="color: white;"></i>
+                            
+                                                </span>
+                            
+                                            </a>
+                                            <span id="dislike_count" style="color: #fff;">{{dislike_count}}</span>
+                                        </div>
+                                        
                                     </div>
                                     {% endif %}
 
@@ -452,7 +457,6 @@ function myFunction(id) {
     
 
     
-
        function likeVid(url, video_id,chk) {
             console.log('Requesting JSON');
             $.post(url, {},  function(rowz){
