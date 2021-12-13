@@ -175,8 +175,17 @@ from django.db.utils import IntegrityError
 @method_decorator(csrf_exempt, name='dispatch')
 class AddLikeView(LoginRequiredMixin, View):
     def post(self, request, pk) :
-        print("Add PK",pk)
+        print("About to Add like for video PK",pk)
         t = get_object_or_404(Video, id=pk)
+
+        already_disliked = VidDislikes.objects.filter(user=request.user, video=t).exists()
+        if already_disliked:
+            print("The video was disliked already, Deleting dislike ....")
+
+            VidDislikes.objects.get(user=request.user, video=t).delete()
+
+            print("DisLike Deleted")
+
         lik = VidLikes(user=request.user, video=t)
         try:
             lik.save()  # In case of duplicate key
@@ -187,7 +196,7 @@ class AddLikeView(LoginRequiredMixin, View):
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteLikeView(LoginRequiredMixin, View):
     def post(self, request, pk) :
-        print("Delete PK",pk)
+        print("About to delete like for video PK",pk)
         t = get_object_or_404(Video, id=pk)
         try:
             lik = VidLikes.objects.get(user=request.user, video=t).delete()
@@ -203,7 +212,7 @@ class AddDisLikeView(LoginRequiredMixin, View):
         t = get_object_or_404(Video, id=pk)
         already_liked = VidLikes.objects.filter(user=request.user, video=t).exists()
         if already_liked:
-            print("The video was liked already Deleting ....")
+            print("The video was liked already, Deleting like ....")
 
             VidLikes.objects.get(user=request.user, video=t).delete()
 
@@ -220,7 +229,7 @@ class AddDisLikeView(LoginRequiredMixin, View):
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteDisLikeView(LoginRequiredMixin, View):
     def post(self, request, pk) :
-        print("Delete dislike PK",pk)
+        print("About to delete dislike for video PK",pk)
         t = get_object_or_404(Video, id=pk)
         try:
             Dlik = VidDislikes.objects.get(user=request.user, video=t).delete()

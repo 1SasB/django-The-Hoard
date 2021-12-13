@@ -461,6 +461,12 @@ function myFunction(id) {
                 $("#like_btn_"+video_id).toggle();
                 if(chk=='1'){
                     $('#like_count').html(function(i, val) { return +val+1 });
+                    // checking to see if dislike button is already on and switching it off
+                    if($('#dislike_btn_'+video_id).is(':visible')){
+                        $("#undislike_btn_"+video_id).toggle();
+                        $("#dislike_btn_"+video_id).toggle();
+                        $('#dislike_count').html(function(i, val) { return +val-1 });
+                    }
                 }else{
                     $('#like_count').html(function(i, val) { return +val-1 });
                 }
@@ -477,6 +483,12 @@ function myFunction(id) {
                 $("#dislike_btn_"+video_id).toggle();
                 if(chk=='1'){
                     $('#dislike_count').html(function(i, val) { return +val+1 });
+                    // checking to see if like button is already on and switching it off
+                    if($('#like_btn_'+video_id).is(':visible')){
+                        $("#unlike_btn_"+video_id).toggle();
+                        $("#like_btn_"+video_id).toggle();
+                        $('#like_count').html(function(i, val) { return +val-1 });
+                    }
                 }else{
                     $('#dislike_count').html(function(i, val) { return +val-1 });
                 }
