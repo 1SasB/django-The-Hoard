@@ -130,6 +130,8 @@ class VideoView(View):
         video_by_id = get_object_or_404(Video,id=id)
         comments = Comment.objects.filter(video=video_by_id).order_by('-date_uploaded')
 
+        print(video_by_id.path.url)
+
         
         for obj in comments:
             reply = obj.reply_set.all()
@@ -293,13 +295,12 @@ class DeleteReply(LoginRequiredMixin,View):
 class VideoDelete(LoginRequiredMixin,View):
     success_url = reverse_lazy('videos:hord_profile')
     def post(self,request):
-        if request.is_ajax():
-            video_ids = request.POST.getlist('id[]')
-            print(video_ids)
-            for id in video_ids:
-                video = Video.objects.get(pk=id)
-                video.delete()
-            return redirect(self.success_url)
+        video_ids = request.POST.getlist('id[]')
+        print(video_ids)
+        for id in video_ids:
+            video = Video.objects.get(pk=id)
+            video.delete()
+        return redirect(self.success_url)
 
 
 
