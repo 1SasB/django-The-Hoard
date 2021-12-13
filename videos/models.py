@@ -49,6 +49,8 @@ class Video(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     hord = models.ForeignKey(Hord,on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    likes = models.ManyToManyField('auth.User', through='VidLikes' ,related_name='video_likes')
+    dislikes = models.ManyToManyField('auth.User', through='VidDislikes', related_name='video_dislikes')
     visibilty = models.CharField(max_length=15,choices=visibilty)
 
     def __str__(self):
@@ -58,13 +60,27 @@ class Video(models.Model):
         os.remove(os.path.join(settings.MEDIA_ROOT,self.path.name))
         super(Video,self).delete(*args,**kwargs)
 
-# class VidLike(models.Model):
-#     video = models.ForeignKey(Video,on_delete=models.CASCADE)
-#     user = user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
-# class VidDislike(models.Model):
-#     video = models.ForeignKey(Video,on_delete=models.CASCADE)
-#     user = user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+class VidLikes(models.Model):
+    video = models.ForeignKey(Video,on_delete=models.CASCADE)
+    user = user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('video','user')
+
+    def __str__(self):
+        return '%s likes %s'%(self.user.username,self.video.title)
+
+
+class VidDislikes(models.Model):
+    video = models.ForeignKey(Video,on_delete=models.CASCADE)
+    user = user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('video','user')
+
+    def __str__(self):
+        return '%s dislikes %s'%(self.user.username,self.video.title)
 
 
 
