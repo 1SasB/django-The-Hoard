@@ -1,7 +1,7 @@
 from django.urls import path,reverse_lazy
 from . import views
 
-from .views import CreateComment, CreateReply, DeleteComment, DeleteReply,AddLikeView,DeleteLikeView, HordPage, HordProfile, NewVideo, Home, Register, CreateHord, UpdateComment, UpdateReply, VideoDelete,VideoView
+from .views import CreateComment, CreateReply, DeleteComment, DeleteReply,AddLikeView,DeleteLikeView,AddDisLikeView,DeleteDisLikeView, HordPage, HordProfile, NewVideo, Home, Register, CreateHord, UpdateComment, UpdateReply, VideoDelete,VideoView
 #, VideoView, CreateCommentView,CommentDeleteView,DeleteReplyView,ReplyCreateView
 
 
@@ -18,6 +18,8 @@ urlpatterns = [
     path('video/delete',VideoDelete.as_view(),name='video_delete'),
     path('video/<int:pk>/like',AddLikeView.as_view(),name='video_like'),
     path('video/<int:pk>/unlike',DeleteLikeView.as_view(),name='video_unlike'),
+    path('video/<int:pk>/dislike',AddDisLikeView.as_view(),name='video_dislike'),
+    path('video/<int:pk>/undislike',DeleteDisLikeView.as_view(),name='video_undislike'),
     path('video/comment/create',CreateComment.as_view(),name='create_comment'),
     path('video/comment/update',UpdateComment.as_view(),name='update_comment'),
     path('video/comment/delete',DeleteComment.as_view(),name='delete_comment'),

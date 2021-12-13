@@ -15,7 +15,7 @@ from django.urls import reverse_lazy,reverse
 from .forms import NewVideoForm, CreateHordF,CommentForm,ReplyForm
 from django.contrib.auth import update_session_auth_hash,login,authenticate,login
 from django.contrib.auth.forms import UserCreationForm
-from .models import VidLikes, Video, Comment,Reply,Hord
+from .models import VidLikes,VidDislikes, Video, Comment,Reply,Hord
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.conf import settings
 
@@ -132,11 +132,11 @@ class VideoView(View):
 
         like_rows = request.user.video_likes.values('id')
         likes = [row['id'] for row in like_rows]
-
         like_count = video_by_id.likes.all().count()
 
-        # dislike_rows = request.user.video_dislikes.values('id')
-        # dislikes = [row['id'] for row in dislike_rows]
+        dislike_rows = request.user.video_dislikes.values('id')
+        dislikes = [row['id'] for row in dislike_rows]
+        dislike_count = video_by_id.dislikes.all().count()
 
         print(video_by_id.path.url)
 
@@ -152,7 +152,9 @@ class VideoView(View):
                     'video_list': video_list,
                     'comments': comments,
                     'video_likes': likes,
-                    'like_count': like_count }
+                    'video_dislikes': dislikes,
+                    'like_count': like_count,
+                    'dislike_count': dislike_count }
         # DoesNotExist
         # print(request.user)
         # if request.user.is_authenticated:
@@ -189,6 +191,39 @@ class DeleteLikeView(LoginRequiredMixin, View):
         t = get_object_or_404(Video, id=pk)
         try:
             lik = VidLikes.objects.get(user=request.user, video=t).delete()
+        except VidLikes.DoesNotExist as e:
+            pass
+
+        return HttpResponse()
+
+# Dislike Functionality
+@method_decorator(csrf_exempt, name='dispatch')
+class AddDisLikeView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        t = get_object_or_404(Video, id=pk)
+        already_liked = VidLikes.objects.filter(user=request.user, video=t).exists()
+        if already_liked:
+            print("The video was liked already Deleting ....")
+
+            VidLikes.objects.get(user=request.user, video=t).delete()
+
+            print("Like Deleted")
+        
+        Dlike =  VidDislikes(user=request.user, video=t)
+        print("Adding Dislike")
+        try:
+            Dlike.save()  # In case of duplicate key
+        except IntegrityError as e:
+            pass
+        return HttpResponse()
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DeleteDisLikeView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("Delete dislike PK",pk)
+        t = get_object_or_404(Video, id=pk)
+        try:
+            Dlik = VidDislikes.objects.get(user=request.user, video=t).delete()
         except VidLikes.DoesNotExist as e:
             pass
 

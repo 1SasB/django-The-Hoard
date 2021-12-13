@@ -79,15 +79,28 @@
 
                                     <!-- unlike button -->
 
-                                    <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                        <i class="fa fa-thumbs-down fa-stack-1x"></i>
-                                        <i class="fa fa-thumbs-o-down fa-stack-1x"></i>
-                                    </span>
-                                    <span class="fa-stack" style="vertical-align: middle;">
-                                        <i class="fa fa-thumbs-down fa-stack-1x" ></i>
-                                        <i class="fa fa-thumbs-o-down fa-stack-1x"></i>
-                                    </span>
-                                    <span style="color: #fff;">2.5K</span>
+                                    <a href="#" onclick="dislikeVid('{% url 'videos:video_undislike' video.id %}','{{ video.id }}','0'); return false;" 
+                                        {% if video.id not in video_dislikes %} style="display: none;" {% endif %}
+                                        id="dislike_btn_{{video.id}}"
+                                    >
+                                        <span class="fa-stack" style="vertical-align: middle;">
+                                            <i class="fa fa-thumbs-down fa-stack-1x" style="padding-left: 0px; color: red;"></i>
+                                            <i class="fa fa-thumbs-o-down fa-stack-1x" style="display: none; color: white;" ></i>
+                                        </span>
+                                    </a>
+                                    
+                                    <a href="#" onclick="dislikeVid('{% url 'videos:video_dislike' video.id %}','{{ video.id }}','1'); return false;" 
+                                        {% if video.id in video_dislikes %} style="display: none;" {% endif %}
+                                        id="undislike_btn_{{video.id}}"
+                                    >
+                                        <span class="fa-stack" style="vertical-align: middle;">
+                                            <i class="fa fa-thumbs-down fa-stack-1x" style="display: none; color: red;"></i>
+                                            <i class="fa fa-thumbs-o-down fa-stack-1x" style="color: white;"></i>
+                    
+                                        </span>
+                    
+                                    </a>
+                                    <span id="dislike_count" style="color: #fff;">{{dislike_count}}</span>
                                     </div>
                                     {% endif %}
 
@@ -450,6 +463,22 @@ function myFunction(id) {
                     $('#like_count').html(function(i, val) { return +val+1 });
                 }else{
                     $('#like_count').html(function(i, val) { return +val-1 });
+                }
+            }).fail(function(xhr) {
+                alert('Url failed with '+xhr.status+' '+url);
+            });
+        }
+
+        function dislikeVid(url, video_id,chk) {
+            console.log('Requesting JSON');
+            $.post(url, {},  function(rowz){
+                console.log(url, 'finished');
+                $("#undislike_btn_"+video_id).toggle();
+                $("#dislike_btn_"+video_id).toggle();
+                if(chk=='1'){
+                    $('#dislike_count').html(function(i, val) { return +val+1 });
+                }else{
+                    $('#dislike_count').html(function(i, val) { return +val-1 });
                 }
             }).fail(function(xhr) {
                 alert('Url failed with '+xhr.status+' '+url);
