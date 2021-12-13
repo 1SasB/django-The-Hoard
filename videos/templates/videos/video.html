@@ -357,9 +357,9 @@
 
 </div>
 <!-- Edit Comment Modal -->
-<div class="modal fade" id="commentModal" aria-labelledby="centermodal" role="dialog" aria-hidden="true">
+<div class="modal fade" id="commentModal" aria-labelledby="centermodal" role="dialog" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
-        <div class="modal-content">
+        <div class="modal-content" style="background-color: #424242; ">
             <div class="modal-header">
               <h5 class="modal-title" id="edit-comment-reply-modal-title"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -382,9 +382,9 @@
     </div>
 </div>
 <!-- Delete comment Modal -->
-<div class="modal fade" id="DeleteCommentModal" aria-labelledby="centermodal" role="dialog" aria-hidden="true">
+<div class="modal fade" id="DeleteCommentModal" aria-labelledby="centermodal" role="dialog" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
-        <div class="modal-content">
+        <div class="modal-content" style="background-color: #424242; ">
             <div class="modal-header">
               <h5 class="modal-title" id="delete-comment-reply-modal-title"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -618,10 +618,10 @@ function editComment(id) {
     comment = $(sp_id).find(".CommentText").text().trim();
     console.log(id)
     console.log(comment)
-    $('#edit-comment-reply-modal-title').text("EDIT COMMENT")
-    $('#edit-modal-message-text').text("Comment:")
+    $('#edit-comment-reply-modal-title').html("EDIT COMMENT")
+    $('#edit-modal-message-text').html("Comment:")
     $('#edit-comment-id').val(id);
-    $('#edit-comment-text').val(comment);
+    $('#edit-comment-text').text(comment);
 
   }
 }
@@ -632,6 +632,7 @@ function deleteComment(id){
         console.log(sp_id)
     
         comment = $(sp_id).find(".CommentText").text().trim();
+        console.log(comment)
         $('#delete-comment-reply-modal-title').text("DELETE COMMENT")
         $('#delete-modal-message-text').text("Comment:")
         $('#delete-comment-id').val(id);
@@ -827,6 +828,7 @@ function deleteReply(id){
         console.log(sp_id)
     
         comment = $(sp_id).find(".ReplyText").text().trim();
+        console.log(reply)
         $('#delete-comment-reply-modal-title').text("DELETE REPLY")
         $('#delete-modal-message-text').text("Reply:")
         $('#delete-comment-id').val(id);
