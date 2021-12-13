@@ -50,31 +50,45 @@
                         <div>
                             <p style="margin: 0px; color: #fff;">456,455 views . Feb 25,2020</p>
                         </div>
-                        
+                                    {% if request.user.is_authenticated %}
                                     <div style="margin-left: 25px;">
+                                    <a href="#" onclick="likeVid('{% url 'videos:video_unlike' video.id %}','{{ video.id }}'); return false;" 
+                                        {% if video.id not in video_likes %} style="display: none;" {% endif %}
+                                        id="like_btn_{{video.id}}"
+                                    >
                                         <span class="fa-stack" style="vertical-align: middle;">
-                                        <i class="far fa-thumbs-up fa-stack-1x" style="padding-left: 0px;"></i>
-                                        <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                
-                                    </span>
-                                    <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                        <i class="far fa-thumbs-up fa-stack-1x"></i>
-                                        <i class="fas fa-thumbs-up fa-stack-1x"></i>
-                
-                                    </span>
+                                            <i class="fa fa-thumbs-up fa-stack-1x" style="padding-left: 0px; color: blue;"></i>
+                                            <i class="fa fa-thumbs-o-up fa-stack-1x" style="display: none; color: white;" ></i>
+                                        </span>
+                                    </a>
+                                    
+                                    <a href="#" onclick="likeVid('{% url 'videos:video_like' video.id %}','{{ video.id }}'); return false;" 
+                                        {% if video.id in video_likes %} style="display: none;" {% endif %}
+                                        id="unlike_btn_{{video.id}}"
+                                    >
+                                        <span class="fa-stack" style="vertical-align: middle;">
+                                            <i class="fa fa-thumbs-up fa-stack-1x" style="display: none; color: blue;"></i>
+                                            <i class="fa fa-thumbs-o-up fa-stack-1x" style="color: white;"></i>
+                    
+                                        </span>
+                    
+
+                                    </a>
+                                    
                                     <span style="color: #fff;">2.5K</span>
                                     <!-- unlike button -->
 
                                     <span class="fa-stack" style="vertical-align: middle; display: none;">
-                                        <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                        <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                        <i class="fa fa-thumbs-down fa-stack-1x"></i>
+                                        <i class="fa fa-thumbs-o-down fa-stack-1x"></i>
                                     </span>
                                     <span class="fa-stack" style="vertical-align: middle;">
-                                        <i class="far fa-thumbs-down fa-stack-1x"></i>
-                                        <i class="fas fa-thumbs-down fa-stack-1x"></i>
+                                        <i class="fa fa-thumbs-down fa-stack-1x" ></i>
+                                        <i class="fa fa-thumbs-o-down fa-stack-1x"></i>
                                     </span>
                                     <span style="color: #fff;">2.5K</span>
                                     </div>
+                                    {% endif %}
 
                     </div>
                     <hr style="margin-top: 0px;">
@@ -421,7 +435,20 @@ function myFunction(id) {
            x.style.display = "none";
          }
        }
+    
 
+    
+
+       function likeVid(url, video_id) {
+            console.log('Requesting JSON');
+            $.post(url, {},  function(rowz){
+                console.log(url, 'finished');
+                $("#unlike_btn_"+video_id).toggle();
+                $("#like_btn_"+video_id).toggle();
+            }).fail(function(xhr) {
+                alert('Url failed with '+xhr.status+' '+url);
+            });
+        }
 
     
     //########################################################

@@ -15,7 +15,7 @@ from django.urls import reverse_lazy,reverse
 from .forms import NewVideoForm, CreateHordF,CommentForm,ReplyForm
 from django.contrib.auth import update_session_auth_hash,login,authenticate,login
 from django.contrib.auth.forms import UserCreationForm
-from .models import Video, Comment,Reply,Hord
+from .models import VidLikes, Video, Comment,Reply,Hord
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.conf import settings
 
@@ -130,6 +130,12 @@ class VideoView(View):
         video_by_id = get_object_or_404(Video,id=id)
         comments = Comment.objects.filter(video=video_by_id).order_by('-date_uploaded')
 
+        like_rows = request.user.video_likes.values('id')
+        likes = [row['id'] for row in like_rows]
+
+        # dislike_rows = request.user.video_dislikes.values('id')
+        # dislikes = [row['id'] for row in dislike_rows]
+
         print(video_by_id.path.url)
 
         
@@ -142,7 +148,8 @@ class VideoView(View):
 
         context = { 'video': video_by_id, 
                     'video_list': video_list,
-                    'comments': comments }
+                    'comments': comments,
+                    'video_likes': likes }
         # DoesNotExist
         # print(request.user)
         # if request.user.is_authenticated:
@@ -154,6 +161,35 @@ class VideoView(View):
         # comments = Comment.objects.filter(video__id=id).order_by('-date_uploaded')[:5]
         # print(comments)
         return render(request, self.template_name, context)
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AddLikeView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("Add PK",pk)
+        t = get_object_or_404(Video, id=pk)
+        lik = VidLikes(user=request.user, video=t)
+        try:
+            lik.save()  # In case of duplicate key
+        except IntegrityError as e:
+            pass
+        return HttpResponse()
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DeleteLikeView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("Delete PK",pk)
+        t = get_object_or_404(Video, id=pk)
+        try:
+            lik = VidLikes.objects.get(user=request.user, video=t).delete()
+        except VidLikes.DoesNotExist as e:
+            pass
+
+        return HttpResponse()
 
 
 class CreateComment(LoginRequiredMixin,View):
