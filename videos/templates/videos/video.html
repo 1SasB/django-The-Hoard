@@ -52,7 +52,7 @@
                         </div>
                                     {% if request.user.is_authenticated %}
                                     <div style="margin-left: 25px;">
-                                    <a href="#" onclick="likeVid('{% url 'videos:video_unlike' video.id %}','{{ video.id }}'); return false;" 
+                                    <a href="#" onclick="likeVid('{% url 'videos:video_unlike' video.id %}','{{ video.id }}','0'); return false;" 
                                         {% if video.id not in video_likes %} style="display: none;" {% endif %}
                                         id="like_btn_{{video.id}}"
                                     >
@@ -62,7 +62,7 @@
                                         </span>
                                     </a>
                                     
-                                    <a href="#" onclick="likeVid('{% url 'videos:video_like' video.id %}','{{ video.id }}'); return false;" 
+                                    <a href="#" onclick="likeVid('{% url 'videos:video_like' video.id %}','{{ video.id }}','1'); return false;" 
                                         {% if video.id in video_likes %} style="display: none;" {% endif %}
                                         id="unlike_btn_{{video.id}}"
                                     >
@@ -72,10 +72,11 @@
                     
                                         </span>
                     
-
                                     </a>
                                     
-                                    <span style="color: #fff;">2.5K</span>
+                                    <span id="like_count" style="color: #fff;">{{like_count}}</span>
+
+
                                     <!-- unlike button -->
 
                                     <span class="fa-stack" style="vertical-align: middle; display: none;">
@@ -439,12 +440,17 @@ function myFunction(id) {
 
     
 
-       function likeVid(url, video_id) {
+       function likeVid(url, video_id,chk) {
             console.log('Requesting JSON');
             $.post(url, {},  function(rowz){
                 console.log(url, 'finished');
                 $("#unlike_btn_"+video_id).toggle();
                 $("#like_btn_"+video_id).toggle();
+                if(chk=='1'){
+                    $('#like_count').html(function(i, val) { return +val+1 });
+                }else{
+                    $('#like_count').html(function(i, val) { return +val-1 });
+                }
             }).fail(function(xhr) {
                 alert('Url failed with '+xhr.status+' '+url);
             });

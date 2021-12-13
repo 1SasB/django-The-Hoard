@@ -133,6 +133,8 @@ class VideoView(View):
         like_rows = request.user.video_likes.values('id')
         likes = [row['id'] for row in like_rows]
 
+        like_count = video_by_id.likes.all().count()
+
         # dislike_rows = request.user.video_dislikes.values('id')
         # dislikes = [row['id'] for row in dislike_rows]
 
@@ -149,7 +151,8 @@ class VideoView(View):
         context = { 'video': video_by_id, 
                     'video_list': video_list,
                     'comments': comments,
-                    'video_likes': likes }
+                    'video_likes': likes,
+                    'like_count': like_count }
         # DoesNotExist
         # print(request.user)
         # if request.user.is_authenticated:
