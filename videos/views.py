@@ -15,7 +15,7 @@ from django.urls import reverse_lazy,reverse
 from .forms import NewVideoForm, CreateHordF,CommentForm,ReplyForm
 from django.contrib.auth import update_session_auth_hash,login,authenticate,login
 from django.contrib.auth.forms import UserCreationForm
-from .models import VidLikes,VidDislikes, Video, Comment,Reply,Hord
+from .models import Subscribers, VidLikes,VidDislikes, Video, Comment,Reply,Hord
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.conf import settings
 
@@ -233,6 +233,32 @@ class DeleteDisLikeView(LoginRequiredMixin, View):
         t = get_object_or_404(Video, id=pk)
         try:
             Dlik = VidDislikes.objects.get(user=request.user, video=t).delete()
+        except VidLikes.DoesNotExist as e:
+            pass
+
+        return HttpResponse()
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AddSubscribeView(LoginRequiredMixin,View):
+    def post(self,request, pk):
+        print("About to Add like for video PK",pk)
+        hord = get_object_or_404(Hord, id=pk)
+
+
+        subs = Subscribers(user=request.user, hord=hord)
+        try:
+            subs.save()  # In case of duplicate key
+        except IntegrityError as e:
+            pass
+        return HttpResponse()
+
+@method_decorator(csrf_exempt, name='dispatch')
+class RemoveSubscribeView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("About to delete dislike for video PK",pk)
+        hord = get_object_or_404(Hord, id=pk)
+        try:
+            Dlik = Subscribers.objects.get(user=request.user, hord=hord).delete()
         except VidLikes.DoesNotExist as e:
             pass
 
