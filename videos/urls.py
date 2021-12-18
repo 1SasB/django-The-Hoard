@@ -12,11 +12,16 @@ urlpatterns = [
     path('upload',NewVideo.as_view(),name='upload'),
     path('register',Register.as_view(),name='register'),
     path('create_hord', CreateHord.as_view(), name='create_hord'),
-    path('video/<int:id>', VideoView.as_view(), name='video_detail'),
+    
+
+    # HOard
     path('hoard/<slug:hord_name>',HordPage.as_view(),name='hord_page'),
     path('hoard/profile',HordProfile.as_view(),name='hord_profile'),
     path('hoard/<int:pk>/subscribe',AddSubscribeView.as_view(),name='hord_subscribe'),
     path('hoard/<int:pk>/unsubscribe',RemoveSubscribeView.as_view(),name='hord_unsubscribe'),
+
+    # Videos
+    path('video/<int:id>', VideoView.as_view(), name='video_detail'),
     path('video/delete',VideoDelete.as_view(),name='video_delete'),
     path('video/<int:pk>/like',AddLikeView.as_view(),name='video_like'),
     path('video/<int:pk>/unlike',DeleteLikeView.as_view(),name='video_unlike'),
