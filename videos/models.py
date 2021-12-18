@@ -74,7 +74,7 @@ class Video(models.Model):
 
 class VidLikes(models.Model):
     video = models.ForeignKey(Video,on_delete=models.CASCADE)
-    user = user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user =  models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('video','user')
@@ -85,7 +85,7 @@ class VidLikes(models.Model):
 
 class VidDislikes(models.Model):
     video = models.ForeignKey(Video,on_delete=models.CASCADE)
-    user = user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user =  models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('video','user')
