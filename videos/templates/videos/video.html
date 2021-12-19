@@ -54,9 +54,9 @@
                                     <div style="margin-left: 25px; display: flex;">
                                         <div style="margin-right: 15px;">
                                             <a href="#" onclick="likeVid('{% url 'videos:video_unlike' video.id %}','{{ video.id }}','0'); return false;" 
-                                            {% if video.id not in video_likes %} style="display: none;" {% else %} style="text-decoration: none;" {% endif %}
+                                            {% if video.id not in video_likes %} style="display: none; text-decoration: none;" {% else %} style="text-decoration: none;" {% endif %}
                                             id="like_btn_{{video.id}}"
-                                        >
+                                            >
                                             <span class="fa-stack" style="vertical-align: middle;">
                                                 <i class="fa fa-thumbs-up fa-stack-1x" style="padding-left: 0px; color: blue;"></i>
                                                 <i class="fa fa-thumbs-o-up fa-stack-1x" style="display: none; color: white;" ></i>
@@ -83,7 +83,7 @@
                                         <!-- Dislike button -->
                                         <div>
                                             <a href="#" onclick="dislikeVid('{% url 'videos:video_undislike' video.id %}','{{ video.id }}','0'); return false;" 
-                                            {% if video.id not in video_dislikes %} style="display: none;" {% else %} style="text-decoration: none;" {% endif %}
+                                            {% if video.id not in video_dislikes %} style="display: none; text-decoration: none;" {% else %} style="text-decoration: none;" {% endif %}
                                             id="dislike_btn_{{video.id}}"
                                             >
                                             <span class="fa-stack" style="vertical-align: middle;">
@@ -112,10 +112,25 @@
                     </div>
                     <hr style="margin-top: 0px;">
                     <div class="container" style="padding-left: 0px;">
-                        <div class="container" style="padding-left: 0px; margin-bottom: 20px;" >
+                        <div class="container" style="padding-left: 0px; margin-bottom: 20px; display: flex;"  >
                             <h6 style="color: #fff; font-weight: 500;">
                                 {{video.hord}}
                             </h6>
+                            
+                            
+                            <a class="btn btn-primary" href="" 
+                                onclick="SubscribeHord('{% url 'videos:hord_subscribe' video.hord.id %}','{{ video.hord.id }}'); return false;" 
+                                {% if video.hord.id in subscribers %} style="display: none;" {% endif %}
+                                id="subscribe_btn_{{video.hord.id}}">  
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                Subscribe
+                            </a>
+                            <a class="btn btn-primary" href="" onclick="unSubscribeHord('{% url 'videos:hord_unsubscribe' video.hord.id %}','{{ video.hord.id }}'); return false;"
+                                {% if video.hord.id not in subscribers %} style="display: none;" {% endif %}
+                                id="unsubscribe_btn_{{video.hord.id}}">
+                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                Subscribed
+                            </a>
                         </div>
                         <p style="color: #fff; font-weight: 500;">
                             {{video.description}}
@@ -125,9 +140,7 @@
                         
                     <!-- edit icon <i class="bi bi-pencil"></i> -->
                     <!-- delete icon <i class="bi bi-trash"></i> -->
-                                    
-                                
-                    
+                                        
                 </div>
          
             </div>
@@ -455,7 +468,25 @@ function myFunction(id) {
          }
        }
     
+       function SubscribeHord(url,hord_id){
+           $.post(url, {}, function(rowz){
+            console.log(url, 'finished')
+            $("#unsubscribe_btn_"+hord_id).toggle();
+            $("#subscribe_btn_"+hord_id).toggle();
+           }).fail(function(xhr){
+               alert('Url failed with '+xhr.status+' '+url)
+           })
+       }
 
+       function unSubscribeHord(url,hord_id){
+           $.post(url, {}, function(rowz){
+            console.log(url, 'finished')
+            $("#unsubscribe_btn_"+hord_id).toggle();
+            $("#subscribe_btn_"+hord_id).toggle();
+           }).fail(function(xhr){
+               alert('Url failed with '+xhr.status+' '+url)
+           })
+       }
     
        function likeVid(url, video_id,chk) {
             console.log('Requesting JSON');

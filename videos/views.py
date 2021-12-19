@@ -138,6 +138,10 @@ class VideoView(View):
         dislikes = [row['id'] for row in dislike_rows]
         dislike_count = video_by_id.dislikes.all().count()
 
+        subsc_rows = request.user.hoard_subscribers.values('id')
+        subscribers = [row['id'] for row in subsc_rows]
+
+
         print(video_by_id.path.url)
 
         
@@ -154,7 +158,8 @@ class VideoView(View):
                     'video_likes': likes,
                     'video_dislikes': dislikes,
                     'like_count': like_count,
-                    'dislike_count': dislike_count }
+                    'dislike_count': dislike_count,
+                    'subscribers':subscribers }
         # DoesNotExist
         # print(request.user)
         # if request.user.is_authenticated:

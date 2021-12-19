@@ -29,7 +29,7 @@ class Hord(models.Model):
         return self.Name
 
 class Subscribers(models.Model):
-    hord = models.ForeignKey(Hord,on_delete=models.CASCADE)
+    hord = models.ForeignKey(Hord,on_delete=models.CASCADE,related_name='subsc_hord')
     user = models.ForeignKey('auth.User',on_delete=models.CASCADE)
 
     class Meta:
