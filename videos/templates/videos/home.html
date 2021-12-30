@@ -2,16 +2,9 @@
 {% extends 'base.html' %}
 
     {% block content %}
-    <div class="container" style="margin: 0px;"  >
-        <div class="row g-5">
-           
-            <div class="col-md-4">
-                <div class="postion-sticky" style="top: 2rem; ">
-                    <h1>Categories</h1>
-                </div>
-            </div>
+    <div class="container" style="margin: 0px;">
 
-            <div class="col-md-8">
+        
                 {% if videos %}
                 <div class="row" style="margin-top: 10px;" >
                     <h1>Recent Uploads</h1>
@@ -27,14 +20,14 @@
                                 </div> -->
                                 <ul class="list-unstyled">
                                     <li>
-                                        <a href="{% url 'videos:video_detail' video.id %}" >
-                                            <b style="font-size: 19px;
+                                        <a href="{% url 'videos:video_detail' video.id %}"  style="text-decoration: none;">
+                                            <p style="font-size: 19px;
                                             font-weight: 500;
-                                            color: #fff; text-decoration: none;">{{video.title}}</b>
+                                            color: #fff;">{{video.title}}</p>
                                         </a>
                                     </li>
-                                    <a href="{% url 'videos:hord_page' video.hord %}">
-                                        <li style="color: #fff; font-size: 12px;">{{video.hord}}</li>
+                                    <a href="{% url 'videos:hord_page' video.hord %}" style="text-decoration: none;">
+                                        <li style="color: #fff; font-size: 12px; text-decoration: none;">{{video.hord}}</li>
                                     </a>
                                     <li style="color: #fff; font-size: 12px;">{{video.date_uploaded}}</li>
                                 </ul>
@@ -47,7 +40,7 @@
                 {% else %}
                 <h1>Sorry there are currently no Videos available</h1>
         {% endif %}
-            </div>
+          
         </div>
         
     </div>
