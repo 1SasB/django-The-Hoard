@@ -55,6 +55,7 @@ class NewVideo(LoginRequiredMixin,View):
         # print(form)
         # print(request.POST)
         # print(request.FILES)
+        print("im here")
         my_file = request.FILES['path']
         if form.is_valid():
             # create a new Video Entry
@@ -94,7 +95,7 @@ class NewVideo(LoginRequiredMixin,View):
 
 
 
-            
+            print("im here")
             hord = get_object_or_404(Hord,owner=request.user)
             new_video = Video(title=title,
                               description=description,
@@ -130,29 +131,23 @@ class VideoView(View):
         video_by_id = get_object_or_404(Video,id=id)
         comments = Comment.objects.filter(video=video_by_id).order_by('-date_uploaded')
 
-        like_rows = request.user.video_likes.values('id')
-        likes = [row['id'] for row in like_rows]
-        like_count = video_by_id.likes.all().count()
+        if request.user.is_authenticated:
 
-        dislike_rows = request.user.video_dislikes.values('id')
-        dislikes = [row['id'] for row in dislike_rows]
-        dislike_count = video_by_id.dislikes.all().count()
+            like_rows = request.user.video_likes.values('id')
+            likes = [row['id'] for row in like_rows]
+            
 
-        subsc_rows = request.user.hoard_subscribers.values('id')
-        subscribers = [row['id'] for row in subsc_rows]
+            dislike_rows = request.user.video_dislikes.values('id')
+            dislikes = [row['id'] for row in dislike_rows]
+            
 
+            subsc_rows = request.user.hoard_subscribers.values('id')
+            subscribers = [row['id'] for row in subsc_rows]
 
-        print(video_by_id.path.url)
+            like_count = video_by_id.likes.all().count()
+            dislike_count = video_by_id.dislikes.all().count()
 
-        
-        for obj in comments:
-            reply = obj.reply_set.all()
-            if(reply):
-                print("true")
-            for rep in reply:
-                print(rep.id)
-
-        context = { 'video': video_by_id, 
+            context = { 'video': video_by_id, 
                     'video_list': video_list,
                     'comments': comments,
                     'video_likes': likes,
@@ -160,16 +155,23 @@ class VideoView(View):
                     'like_count': like_count,
                     'dislike_count': dislike_count,
                     'subscribers':subscribers }
-        # DoesNotExist
-        # print(request.user)
-        # if request.user.is_authenticated:
-        #     print('user signed in')
-        #     comment_form = CommentForm()
-        #     reply_form = ReplyForm()
-        #     context['comment_form'] = comment_form
+        
+        else:
 
-        # comments = Comment.objects.filter(video__id=id).order_by('-date_uploaded')[:5]
-        # print(comments)
+        
+            like_count = video_by_id.likes.all().count()
+            dislike_count = video_by_id.dislikes.all().count()
+            # subscribers = [row['id'] for row in subsc_rows]
+
+            context = { 'video': video_by_id, 
+                        'video_list': video_list,
+                        'comments': comments,
+                        'like_count': like_count,
+                        'dislike_count': dislike_count
+                        }
+
+        
+
         return render(request, self.template_name, context)
 
 
@@ -246,7 +248,7 @@ class DeleteDisLikeView(LoginRequiredMixin, View):
 @method_decorator(csrf_exempt, name='dispatch')
 class AddSubscribeView(LoginRequiredMixin,View):
     def post(self,request, pk):
-        print("About to Add like for video PK",pk)
+        print("About to Add subscribe for video PK",pk)
         hord = get_object_or_404(Hord, id=pk)
 
 
@@ -260,7 +262,7 @@ class AddSubscribeView(LoginRequiredMixin,View):
 @method_decorator(csrf_exempt, name='dispatch')
 class RemoveSubscribeView(LoginRequiredMixin, View):
     def post(self, request, pk) :
-        print("About to delete dislike for video PK",pk)
+        print("About to delete subscribe for video PK",pk)
         hord = get_object_or_404(Hord, id=pk)
         try:
             Dlik = Subscribers.objects.get(user=request.user, hord=hord).delete()
