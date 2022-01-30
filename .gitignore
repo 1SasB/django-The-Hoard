@@ -4,3 +4,4 @@ media/videos/*
 
 !media/videos/.gitkeep
 videos/__pycache__
+TheHoard/__pycache__
