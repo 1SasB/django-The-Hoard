@@ -3,3 +3,4 @@
 media/videos/*
 
 !media/videos/.gitkeep
+videos/__pycache__
