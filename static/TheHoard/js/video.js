@@ -107,32 +107,35 @@ function myFunction(id) {
     
     //########################################################
     // COMENT AND REPLY FUNCTIONS BELOW
-    $("form#comment-form").submit(function() {
-    var commentInput = $('textarea[name="comment-text"]').val().trim();
-    var video_id = $('textarea[name="video-id"]').val()
-    console.log(video_id)
-    if (commentInput) {
-        // Create Ajax Call
-        $.ajax({
-            url: '/video/comment/create',
-            data: {
-                'comment': commentInput,
-                'vid_id': video_id
-            },
-            dataType: 'json',
-            success: function (data) {
-                if (data.comment) {
-                    console.log(data.comment)
-                  appendToCommentdiv(data.comment);
+    
+    function create_comment(){
+        var commentInput = $('textarea[name="comment-text"]').val().trim();
+        var video_id = $('input[name="video-id"]').val()
+        console.log(video_id)
+        if (commentInput) {
+            // Create Ajax Call
+            $.ajax({
+                url: '/video/comment/create',
+                data: {
+                    'comment': commentInput,
+                    'vid_id': video_id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.comment) {
+                        console.log(data.comment)
+                    appendToCommentdiv(data.comment);
+                    }
                 }
-            }
-        });
-      } else {
-        alert("All fields must have a valid value.");
+            });
+        } else {
+            alert("All fields must be filled with a valid value.");
+        }
+        $('form#comment-form').trigger("reset");
+        return false;
     }
-    $('form#comment-form').trigger("reset");
-    return false;
-});
+    
+
 
 function appendToCommentdiv(comment) {
   $("#comment-list").prepend(`

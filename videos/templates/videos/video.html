@@ -201,12 +201,12 @@
                 <h4 style="color: #fff; font-weight: 500;">Comments</h4>
                 <div class="container" id="comment_form" style="padding: 0px">
                     <form id="comment-form" action="">
-                        <!-- <textarea name="comment-text" id="comment-input" placeholder="Type a comment" style="border: 1px solid white; border-radius: 3px; background: transparent; width: 350px; color: white;"></textarea> -->
-                        <input  type="text" name="comment-text" id="comment-input" placeholder="Type a comment" style="border: 1px solid white; border-radius: 3px; background: transparent;" >
+                        <textarea name="comment-text" id="comment-input" placeholder="Type a comment" style="border: 1px solid white; border-radius: 3px; background: transparent; width: 350px; color: white;"></textarea>
+                        <!-- <input  type="text" name="comment-text" id="comment-input" placeholder="Type a comment" style="border: 1px solid white; border-radius: 3px; background: transparent;" > -->
                         <input type="hidden" name="video-id" value="{{video.id}}">
                         <div style="margin-top: 8.5px;">
                             <!-- <a  id="comment-btn">Submit</a> -->
-                            <button class="btn btn-secondary btn-sm" id="comment-btn" type="submit">Submit</button>
+                            <a class="btn btn-secondary btn-sm" id="comment-btn" onclick="create_comment()">Submit</a>
                         </div>
                     </form>
                 </div>
