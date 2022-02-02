@@ -177,11 +177,7 @@ function appendToCommentdiv(comment) {
                                                     <i class="fas fa-thumbs-down fa-stack-1x"></i>
                                                 </span>
                                                 <span>2.5K</span>
-                                                {% if request.user.is_authenticated%}
                                                 <a id="reply_btn" style="margin-left: 25px;" onclick="replyFunction(${comment.id})"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                                {% else %}
-                                                <a href="{% url 'login' %}?next={% url 'videos:video_detail' video.id %}" id="reply_btn" style="margin-left: 25px;" ><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                                {% endif %}
                                                 <a onclick="my_Function(${comment.id})" style="margin-left: 20px;">
                                                     View replys
                                                 </a> <!-- "onclick="my_Function()" href="#" style="margin-left: 20px;">View replys</a> -->
