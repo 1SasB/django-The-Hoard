@@ -272,12 +272,13 @@ class RemoveSubscribeView(LoginRequiredMixin, View):
         return HttpResponse()
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CreateComment(LoginRequiredMixin,View):
-    def get(self,request):
+    def post(self,request):
         print("Inside Comment Create View")
-        comment = request.GET.get('comment',None)
+        comment = request.POST.get('comment',None)
         print(comment)
-        video_id = request.GET.get('vid_id',None)
+        video_id = request.POST.get('vid_id',None)
         print(video_id)
         video = get_object_or_404(Video,pk=int(video_id))
 
@@ -296,13 +297,13 @@ class CreateComment(LoginRequiredMixin,View):
         return JsonResponse(data)
 
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class UpdateComment(LoginRequiredMixin,View):
-    def get(self,request):
+    def post(self,request):
         print("Inside Comment Update View")
-        comment_text = request.GET.get('comment',None)
+        comment_text = request.POST.get('comment',None)
         print(comment_text)
-        comment_id = request.GET.get('id',None)
+        comment_id = request.POST.get('id',None)
         print(comment_id)
         comment = get_object_or_404(Comment,pk=int(comment_id))
         comment.c_text = comment_text
@@ -323,10 +324,10 @@ class UpdateComment(LoginRequiredMixin,View):
 
 
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class DeleteComment(LoginRequiredMixin,View):
-    def get(self,request):
-        comment_id = request.GET.get('id',None)
+    def post(self,request):
+        comment_id = request.POST.get('id',None)
         comment = get_object_or_404(Comment,pk=int(comment_id))
         comment_text = comment.c_text
         comment.delete()
@@ -339,13 +340,13 @@ class DeleteComment(LoginRequiredMixin,View):
         return JsonResponse(data)
 
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class CreateReply(LoginRequiredMixin,View):
-    def get(self,request):
+    def post(self,request):
         print("Inside CreateReply View")
 
-        c_reply = request.GET.get('reply',None)
-        comment_id = request.GET.get('comment_id',None)
+        c_reply = request.POST.get('reply',None)
+        comment_id = request.POST.get('comment_id',None)
         comment = get_object_or_404(Comment,pk=comment_id)
         
 
@@ -364,13 +365,13 @@ class CreateReply(LoginRequiredMixin,View):
 
         return JsonResponse(data)
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class UpdateReply(LoginRequiredMixin,View):
-    def get(self,request):
+    def post(self,request):
         print("Inside Reply Update View")
-        reply_text = request.GET.get('reply',None)
+        reply_text = request.POST.get('reply',None)
         print(reply_text)
-        reply_id = request.GET.get('id',None)
+        reply_id = request.POST.get('id',None)
         print(reply_id)
         reply = get_object_or_404(Reply,pk=int(reply_id))
         reply.r_text = reply_text
@@ -391,10 +392,10 @@ class UpdateReply(LoginRequiredMixin,View):
 
 
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class DeleteReply(LoginRequiredMixin,View):
-    def get(self,request):
-        reply_id = request.GET.get('id',None)
+    def post(self,request):
+        reply_id = request.POST.get('id',None)
         reply = get_object_or_404(Comment,pk=int(reply_id))
         reply_text = reply.r_text
         reply.delete()
