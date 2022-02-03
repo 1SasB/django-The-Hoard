@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="row" >
-    <div class="col-md-8" style="padding-right:12px;">
+    <div class="col-sm-12 col-md-8" style="padding-right:12px;">
         
         <div class="card" style="background-color: #000000;">
             <video width="100%" height="500"  autoplay>
@@ -201,7 +201,7 @@
                 <h4 style="color: #fff; font-weight: 500;">Comments</h4>
                 <div class="container" id="comment_form" style="padding: 0px">
                     <form id="comment-form" action="">
-                        <textarea name="comment-text" id="comment-input" placeholder="Type a comment" style="border: 1px solid white; border-radius: 3px; background: transparent; width: 350px; color: white;"></textarea>
+                        <textarea name="comment-text" id="comment-input" placeholder="Type a comment" style="border: 1px solid white; border-radius: 3px; background: transparent; width: max-content; color: white;"></textarea>
                         <!-- <input  type="text" name="comment-text" id="comment-input" placeholder="Type a comment" style="border: 1px solid white; border-radius: 3px; background: transparent;" > -->
                         <input type="hidden" name="video-id" value="{{video.id}}">
                         <div style="margin-top: 8.5px;">
@@ -386,10 +386,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4" style="padding: 0;">
-        <div class="row" >
-            
-            <div class="col" >
+    <div class="col-sm-11 col-md-4" style="padding: 12px;">
                 {% for video in video_list %}
                 <div class="card" style="margin: 0px; background-color: transparent;  width: auto;">
                     <img class="thumbnail-image" src="http://unsplash.it/650/250?random={{video.id}}" alt="">
@@ -411,11 +408,7 @@
                     </div>
                 
                 </div>
-                {% endfor %}
-            
-
-            </div>
-        </div>
+                {% endfor %}            
     </div>
 
 
