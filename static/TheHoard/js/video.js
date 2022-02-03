@@ -244,7 +244,8 @@ function deleteComment(id){
     }
 }
 
-$("form#update-Comment-form").submit(function() {
+function update_comment(){
+
     var idInput = $('input[name="edit-comment-id"]').val();
     var commentInput = $('textarea[name="edit-comment-text"]').val().trim();
     console.log(commentInput)
@@ -261,20 +262,20 @@ $("form#update-Comment-form").submit(function() {
             dataType: 'json',
             success: function (data) {
                 if (data.comment) {
-                  updateToComment(data.comment);
+                    updateToComment(data.comment);
                 }
             }
         });
-       } else {
+        } else {
         alert("All fields must have a valid value.");
     }
     $('form#update-Comment-form').trigger("reset");
     $('#commentModal').modal('hide');
     return false;
-});
 
+}
 
-$("form#delete-Comment-form").submit(function() {
+function delete_comment(){
     var idInput = $('input[name="delete-comment-id"]').val();
     console.log(idInput)
     if (idInput) {
@@ -288,18 +289,22 @@ $("form#delete-Comment-form").submit(function() {
             dataType: 'json',
             success: function (data) {
                 if (data.success_message) {
-                  $(".comment-container"+data.comment_id).remove()
-                  console.log(data.success_message)
+                    $(".comment-container"+data.comment_id).remove()
+                    console.log(data.success_message)
                 }
             }
         });
-       } else {
+        } else {
         alert("All fields must have a valid value.");
     }
     $('form#delete-Comment-form').trigger("reset");
     $('#DeleteCommentModal').modal('hide');
     return false;
-});
+
+    
+}
+
+
 
 
 
@@ -450,6 +455,7 @@ $("form#update-Comment-form").submit(function() {
     if (commentInput) {
         // Create Ajax Call
         $.ajax({
+            method: 'post',
             url: '/comment/reply/update',
             data: {
                 'id': idInput,
@@ -493,6 +499,7 @@ $("form#delete-Comment-form").submit(function() {
     if (idInput) {
         // Create Ajax Call
         $.ajax({
+            method: 'post',
             url: '/comment/reply/delete',
             data: {
                 'id': idInput
