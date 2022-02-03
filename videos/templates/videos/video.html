@@ -315,8 +315,8 @@
                                                                 <div class="container" style="margin: 0px; padding: 0px;">
                                                                     <p style="margin: 0px;">
                                                                         {{reply.user}}
-                                                                        <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editReply('{{reply.id}}')" ><i class="bi bi-pencil"></i></a>
-                                                                        <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteReply('{{reply.id}}')"><i class="bi bi-trash"></i></a>
+                                                                        <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#ReplyModal" onclick="editReply('{{reply.id}}')" ><i class="bi bi-pencil"></i></a>
+                                                                        <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteReplyModal" onclick="deleteReply('{{reply.id}}')"><i class="bi bi-trash"></i></a>
                                                                     </p>
                                                                     <p style="margin: 0px; font-size: 9px;">{{reply.date_uploaded|naturaltime}}</p>
                                                                 </div>
@@ -352,7 +352,6 @@
                                 
                                 
                                                                         <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                                                        <a href="#" style="margin-left: 20px;">View replys</a>
                                                                     </div>
                                                                     
                                                                 </div>
@@ -458,6 +457,59 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <a onclick="delete_comment()" class="btn btn-danger">DELETE</a>
+                    </div>
+                </form>
+             
+              
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Edit Reply Modal -->
+<div class="modal" id="ReplyModal" aria-labelledby="centermodal" role="dialog" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+        <div class="modal-content" style="background-color: #424242; ">
+            <div class="modal-header">
+              <h5 class="modal-title" id="edit-reply-modal-title"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="update-reply-form" action="" >
+                  <input type="hidden" name="edit-reply-id" id="edit-reply-id">
+                  <div class="container">
+                    <label for="message-text" class="col-form-label" id="edit-reply-modal-message-text"></label>
+                    <textarea class="form-control" name="edit-reply-text" id="edit-reply-text"></textarea>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a  onclick="update_reply()" class="btn btn-primary">Save changes</a>
+                  </div>
+              </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- Delete Reply Modal -->
+<div class="modal fade" id="DeleteReplyModal" aria-labelledby="centermodal" role="dialog" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+        <div class="modal-content" style="background-color: #424242; ">
+            <div class="modal-header">
+              <h5 class="modal-title" id="delete-reply-modal-title"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="delete-reply-form">
+                    <div class="container" id="confirm-reply-Comment">
+                        <input type="hidden" name="delete-reply-id" id="delete-reply-id">
+                        <label for="message-text" class="col-form-label" id="delete-reply-modal-message-text"></label>
+                        <p name="delete-reply-text" id="delete-reply-text"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a onclick="delete_reply()" class="btn btn-danger">DELETE</a>
                     </div>
                 </form>
              

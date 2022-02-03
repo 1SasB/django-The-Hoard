@@ -396,7 +396,7 @@ class UpdateReply(LoginRequiredMixin,View):
 class DeleteReply(LoginRequiredMixin,View):
     def post(self,request):
         reply_id = request.POST.get('id',None)
-        reply = get_object_or_404(Comment,pk=int(reply_id))
+        reply = get_object_or_404(Reply,pk=int(reply_id))
         reply_text = reply.r_text
         reply.delete()
 

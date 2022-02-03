@@ -369,8 +369,8 @@ function appendToReplydiv(reply){
                                                                 <div class="container" style="margin: 0px; padding: 0px;">
                                                                     <p style="margin: 0px;" name="reply-user">
                                                                         ${reply.user}
-                                                                        <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editReply(${reply.id})" ><i class="bi bi-pencil"></i></a>
-                                                                        <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteReply(${reply.id})"><i class="bi bi-trash"></i></a>
+                                                                        <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#ReplyModal" onclick="editReply(${reply.id})" ><i class="bi bi-pencil"></i></a>
+                                                                        <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteReplyModal" onclick="deleteReply(${reply.id})"><i class="bi bi-trash"></i></a>
                                                                     </p>
                                                                     <p style="margin: 0px; font-size: 9px;" name="reply-date">${reply.uploaded_date}</p>
                                                                 </div>
@@ -406,7 +406,6 @@ function appendToReplydiv(reply){
                                 
                                 
                                                                         <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
-                                                                        <a href="#" style="margin-left: 20px;">View replys</a>
                                                                     </div>
                                                                     
                                                                 </div>
@@ -422,13 +421,13 @@ function editReply(id) {
     sp_id = "#"+id+"-reply-container";
     console.log(sp_id)
     
-    comment = $(sp_id).find(".ReplyText").text().trim();
+    reply = $(sp_id).find(".ReplyText").text().trim();
     console.log(id)
-    console.log(comment)
-    $('#edit-comment-reply-modal-title').text("EDIT REPLY")
-    $('#edit-modal-message-text').text("Reply:")
-    $('#edit-comment-id').val(id);
-    $('#edit-comment-text').val(comment);
+    console.log(reply)
+    $('#edit-reply-modal-title').text("EDIT REPLY")
+    $('#edit-reply-modal-message-text').text("Reply:")
+    $('#edit-reply-id').val(id);
+    $('#edit-reply-text').val(reply);
 
   }
 }
@@ -438,18 +437,19 @@ function deleteReply(id){
         sp_id = "#"+id+"-reply-container";
         console.log(sp_id)
     
-        comment = $(sp_id).find(".ReplyText").text().trim();
+        reply = $(sp_id).find(".ReplyText").text().trim();
         console.log(reply)
-        $('#delete-comment-reply-modal-title').text("DELETE REPLY")
-        $('#delete-modal-message-text').text("Reply:")
-        $('#delete-comment-id').val(id);
-        $('#delete-comment-text').text(comment);
+        $('#delete-reply-modal-title').text("DELETE REPLY")
+        $('#delete-reply-modal-message-text').text("Reply:")
+        $('#delete-reply-id').val(id);
+        $('#delete-reply-text').text(reply);
     }
 }
 
-$("form#update-Comment-form").submit(function() {
-    var idInput = $('input[name="edit-comment-id"]').val();
-    var commentInput = $('textarea[name="edit-comment-text"]').val().trim();
+
+function update_reply(){
+    var idInput = $('input[name="edit-reply-id"]').val();
+    var commentInput = $('textarea[name="edit-reply-text"]').val().trim();
     console.log(commentInput)
     console.log(idInput)
     if (commentInput) {
@@ -463,8 +463,8 @@ $("form#update-Comment-form").submit(function() {
             },
             dataType: 'json',
             success: function (data) {
-                if (data.reply) {
-                  updateToReply(data.reply);
+                if (data.comment) {
+                  updateToReply(data.comment);
                 }
             }
         });
@@ -472,9 +472,11 @@ $("form#update-Comment-form").submit(function() {
         alert("All fields must have a valid value.");
     }
     $('form#update-Reply-form').trigger("reset");
-    $('#commentModal').modal('hide');
-    return false;
-});
+    $('#ReplyModal').modal('toggle');
+    console.log("finished updating reply >>>")
+    // return false;
+}
+
 
 function updateToReply(reply){
     console.log("inside updateToComment function")
@@ -492,9 +494,8 @@ function updateToReply(reply){
       });
 }
 
-
-$("form#delete-Comment-form").submit(function() {
-    var idInput = $('input[name="delete-comment-id"]').val();
+function delete_reply(){
+    var idInput = $('input[name="delete-reply-id"]').val();
     console.log(idInput)
     if (idInput) {
         // Create Ajax Call
@@ -516,6 +517,7 @@ $("form#delete-Comment-form").submit(function() {
         alert("All fields must have a valid value.");
     }
     $('form#delete-Reply-form').trigger("reset");
-    $('#DeleteCommentModal').modal('hide');
+    $('#DeleteReplyModal').modal('hide');
     return false;
-});
+}
+
