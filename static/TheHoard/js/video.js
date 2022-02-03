@@ -115,6 +115,7 @@ function myFunction(id) {
         if (commentInput) {
             // Create Ajax Call
             $.ajax({
+                method: 'post',
                 url: '/video/comment/create',
                 data: {
                     'comment': commentInput,
@@ -251,6 +252,7 @@ $("form#update-Comment-form").submit(function() {
     if (commentInput) {
         // Create Ajax Call
         $.ajax({
+            method: 'post',
             url: '/video/comment/update',
             data: {
                 'id': idInput,
@@ -278,6 +280,7 @@ $("form#delete-Comment-form").submit(function() {
     if (idInput) {
         // Create Ajax Call
         $.ajax({
+            method: 'post',
             url: '/video/comment/delete',
             data: {
                 'id': idInput
@@ -319,7 +322,6 @@ function updateToComment(comment){
 
 // Reply ajax fuunctions
 
-
 $('form#reply-form').submit(function(){
     // var comment_id = $('input[name="reply-comment-id"]').val()
     var attr_id = $(this).children('input:first-child').val()
@@ -330,7 +332,8 @@ $('form#reply-form').submit(function(){
     console.log(comment_id)
     if(reply_text){
         $.ajax({
-            url: 'comment/reply/create',
+            method: 'post',
+            url: '/comment/reply/create',
             data: {
                 'comment_id': comment_id,
                 'reply': reply_text
