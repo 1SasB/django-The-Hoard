@@ -2,35 +2,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container"  >
+<div class="container" style="margin: 0px;">
 
+        
     {% if videos %}
-            <div class="row" style="margin-top: 10px;" >
-                {% for video in videos %}
-                    <div class="col-sm-4" style="margin-bottom: 10px;">
-                        <div class="card" style="margin: 0px;">
-                                <img class="thumbnail-image" src="http://unsplash.it/390/250?gravity=center" alt="">
-                            <div class="card-body" style="margin: 0px; padding: 0px px;" >
-                                <!-- <div class="container" style="margin: 0px 0px 3px 0px;">
-                                    <a href="{% url 'videos:video_detail' video.id %}" class="thumbnail" video-duration="12:15">
-                                        <img class="thumbnail-image" src="http://unsplash.it/390/250?gravity=center" alt="">
-                                    </a>
-                                </div> -->
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a href="{% url 'videos:video_detail' video.id %}" >
-                                            <b>{{video.title}}</b>
-                                        </a>
-                                    </li>
-                                    <li>{{video.date_uploaded}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+    <div class="row" style="margin-top: 10px;" >
+        <h1>{{video.hord}}</h1>
+        {% for video in videos %}
+            <div class="col-sm-4 " style="margin-bottom: 10px;">
+                <div class="card shadow" style="margin: 0px; background-color: transparent; ">
+                    <img class="thumbnail-image" src="http://unsplash.it/650/250?random={{video.id}}" alt="">
+                <div class="card-body" style="margin: 0px; padding: 0px px; " >
+                    <!-- <div class="container" style="margin: 0px 0px 3px 0px;">
+                        <a href="{% url 'videos:video_detail' video.id %}" class="thumbnail" video-duration="12:15">
+                            <img class="thumbnail-image" src="http://unsplash.it/390/250?gravity=center" alt="">
+                        </a>
+                    </div> -->
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="{% url 'videos:video_detail' video.id %}"  style="text-decoration: none;">
+                                <p style="font-size: 19px;
+                                font-weight: 500;
+                                color: #fff;">{{video.title}}</p>
+                            </a>
+                        </li>
+                        <a href="{% url 'videos:hord_page' video.hord %}" style="text-decoration: none;">
+                            <li style="color: #fff; font-size: 12px; text-decoration: none;">{{video.hord}}</li>
+                        </a>
+                        <li style="color: #fff; font-size: 12px;">{{video.date_uploaded}}</li>
+                    </ul>
+                </div>
+                </div>
+                
             </div>
-            {% else %}
-            <h1>Sorry there are currently no Videos available</h1>
-    {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <h1>Sorry there are currently no Videos available</h1>
+{% endif %}
+
 </div>
 {% endblock %}
