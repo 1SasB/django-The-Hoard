@@ -31,7 +31,6 @@ class Home(View):
         videos = Video.objects.order_by('-date_uploaded')
         for obj in videos:
             obj.natural_updated = naturaltime(obj.date_updated)
-            print(obj.path)
 
         return render(request, self.template_name, {'videos': videos})
 
@@ -106,7 +105,6 @@ class NewVideo(LoginRequiredMixin,View):
                               hord=hord
                               )
             new_video.save()
-            print(new_video.pk)
 
             # clip = VideoFileClip(file_url)
             # frame = clip.reader.fps
@@ -277,9 +275,7 @@ class CreateComment(LoginRequiredMixin,View):
     def post(self,request):
         print("Inside Comment Create View")
         comment = request.POST.get('comment',None)
-        print(comment)
         video_id = request.POST.get('vid_id',None)
-        print(video_id)
         video = get_object_or_404(Video,pk=int(video_id))
 
         comment_obj = Comment.objects.create(c_text=comment,video=video,user=request.user)
@@ -302,9 +298,7 @@ class UpdateComment(LoginRequiredMixin,View):
     def post(self,request):
         print("Inside Comment Update View")
         comment_text = request.POST.get('comment',None)
-        print(comment_text)
         comment_id = request.POST.get('id',None)
-        print(comment_id)
         comment = get_object_or_404(Comment,pk=int(comment_id))
         comment.c_text = comment_text
         comment.save()
@@ -343,7 +337,6 @@ class DeleteComment(LoginRequiredMixin,View):
 @method_decorator(csrf_exempt, name='dispatch')
 class CreateReply(LoginRequiredMixin,View):
     def post(self,request):
-        print("Inside CreateReply View")
 
         c_reply = request.POST.get('reply',None)
         comment_id = request.POST.get('comment_id',None)
@@ -368,11 +361,8 @@ class CreateReply(LoginRequiredMixin,View):
 @method_decorator(csrf_exempt, name='dispatch')
 class UpdateReply(LoginRequiredMixin,View):
     def post(self,request):
-        print("Inside Reply Update View")
         reply_text = request.POST.get('reply',None)
-        print(reply_text)
         reply_id = request.POST.get('id',None)
-        print(reply_id)
         reply = get_object_or_404(Reply,pk=int(reply_id))
         reply.r_text = reply_text
         reply.save()
@@ -413,7 +403,6 @@ class VideoDelete(LoginRequiredMixin,View):
     success_url = reverse_lazy('videos:hord_profile')
     def post(self,request):
         video_ids = request.POST.getlist('id[]')
-        print(video_ids)
         for id in video_ids:
             video = Video.objects.get(pk=id)
             video.delete()
@@ -435,6 +424,9 @@ class HordProfile(LoginRequiredMixin,View):
     template_name = 'videos/hord_profile.html'
 
     def get(self,request):
+        print("kwame")
+        print(request.user)
+
         hord = get_object_or_404(Hord,owner=request.user)
         hord_videos = Video.objects.filter(hord=hord)
         ctx ={'videos': hord_videos}
@@ -466,11 +458,8 @@ class Register(View):
             return render(request, self.template_name, ctx)
 
         user_form.save()
-        print(request.POST)
         user_name = request.POST.get('username',False)
-        print(user_name)
         password = request.POST.get('password1',False)
-        print(password)
         user = authenticate(request,username=user_name,password=password)
         if user is not None:
             login(request,user)
