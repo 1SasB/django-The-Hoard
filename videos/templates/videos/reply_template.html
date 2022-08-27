@@ -1,0 +1,48 @@
+{% load humanize %}
+{% block content %}
+<li id="container_reply_{{comment_id}}">
+    <div class="container" style="margin: 0px; padding: 0px;">
+        <p style="margin: 0px;" name="reply-user">
+            {{user}}
+            <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#ReplyModal" onclick="editReply('{{id}}')" ><i class="bi bi-pencil"></i></a>
+            <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteReplyModal" onclick="deleteReply('{{id}}')"><i class="bi bi-trash"></i></a>
+        </p>
+        <p style="margin: 0px; font-size: 9px;" name="reply-date">{{uploaded_date|naturaltime }}</p>
+    </div>
+    <div class="container" id="{{id}}-reply-container" style="margin: 0px; padding: 0px;">
+
+        <p class="ReplyText">
+        {{reply}}
+        </p>
+        <div class="container" style=" margin-bottom: 7.5px; padding: 0px;">
+            <!-- like button -->
+            <span class="fa-stack" style="vertical-align: middle;">
+                <i class="far fa-thumbs-up fa-stack-1x"></i>
+                <i class="fas fa-thumbs-up fa-stack-1x"></i>
+
+            </span>
+            <span class="fa-stack" style="vertical-align: middle; display: none;">
+                <i class="far fa-thumbs-up fa-stack-1x"></i>
+                <i class="fas fa-thumbs-up fa-stack-1x"></i>
+
+            </span>
+            <span>2.5K</span>
+            <!-- unlike button -->
+
+            <span class="fa-stack" style="vertical-align: middle; display: none;">
+                <i class="far fa-thumbs-down fa-stack-1x"></i>
+                <i class="fas fa-thumbs-down fa-stack-1x"></i>
+            </span>
+            <span class="fa-stack" style="vertical-align: middle;">
+                <i class="far fa-thumbs-down fa-stack-1x"></i>
+                <i class="fas fa-thumbs-down fa-stack-1x"></i>
+            </span>
+            <span>2.5K</span>
+
+
+            <a href="#" id="reply_btn" style="margin-left: 25px;"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+        </div>
+        
+    </div>
+</li>
+{% endblock %}

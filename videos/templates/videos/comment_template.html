@@ -1,0 +1,71 @@
+{% load humanize %}
+{% block content %}
+<li class="comment-container{{id}}" style="margin: 0px; padding: 0px;">
+    <span style=" margin-bottom: 0px;" id="{{id}}-comment-span">
+        <p style="margin: 0px;" name="comment-user" >
+            {{user}}
+        </p>
+            <a  href="#" id="getComment" data-bs-toggle="modal" data-bs-target="#commentModal" onclick="editComment('{{id}}')" ><i class="bi bi-pencil"></i></a>
+            <a  href="#" data-bs-toggle="modal" data-bs-target="#DeleteCommentModal" onclick="deleteComment('{{id}}')"><i class="bi bi-trash"></i></a>
+        <p style="margin: 0px; font-size: 9px;" name="comment-date" >{{ uploaded_date|naturaltime }}</p>
+        <p class="CommentText" style=" margin-bottom: 0px;" name="comment-text">
+            {{comment_text}}
+        </p>
+    </span>
+    <div class="container" style="padding: 0px; margin-bottom: 7.5px; margin-top: 5px;">
+        <!-- like button -->
+        <span class="fa-stack" style="vertical-align: middle;">
+            <i class="far fa-thumbs-up fa-stack-1x" style="padding-left: 0px;"></i>
+            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+
+        </span>
+        <span class="fa-stack" style="vertical-align: middle; display: none;">
+            <i class="far fa-thumbs-up fa-stack-1x"></i>
+            <i class="fas fa-thumbs-up fa-stack-1x"></i>
+
+        </span>
+        <span>2.5K</span>
+        <!-- unlike button -->
+
+        <span class="fa-stack" style="vertical-align: middle; display: none;">
+            <i class="far fa-thumbs-down fa-stack-1x"></i>
+            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+        </span>
+        <span class="fa-stack" style="vertical-align: middle;">
+            <i class="far fa-thumbs-down fa-stack-1x"></i>
+            <i class="fas fa-thumbs-down fa-stack-1x"></i>
+        </span>
+        <span>2.5K</span>
+        <a id="reply_btn" style="margin-left: 25px;" onclick="replyFunction('{{id}}')"><i class="bi bi-reply" style="font-size: 1.3rem; color: black;" ></i></a>
+        <a onclick="my_Function('{{id}}')" style="margin-left: 20px;">
+            View replys
+        </a> <!-- "onclick="my_Function()" href="#" style="margin-left: 20px;">View replys</a> -->
+
+    </div>
+    <div class="container" id="reply_form{{id}}" style="display: none;">
+        <form action="" id="reply-form" name="reply-form">
+            <input type="hidden" name="reply-comment-id" id="reply-comment-id{{id}}" value="{{id}}">
+            <input class="form-control form-control-sm" type="text" name="reply-comment-input" placeholder="Type a reply" id="reply-comment-input{{id}}" >
+            <div style="margin-top: 8.5px;">
+                <button type="submit" class="btn btn-secondary btn-sm" id="reply_btn">Submit</button>
+                <button class="btn btn-secondary btn-sm" onclick="replyFunction('{{id}}')" >Cancel</button>
+            </div>
+        </form>
+        
+        
+    </div>
+
+    <div id="reply-container{{id}}">
+    
+        <div id="reply_container{{id}}" style="display: none;">
+            
+            <ul class="list-unstyled" id="Reply_container{{id}}" style="margin-left: 20px; margin-right: 4.5px;">
+                <li style="display: none;"></li>
+            </ul>
+            
+        </div>
+    
+    </div>
+    <hr>
+</li>
+{% endblock %}

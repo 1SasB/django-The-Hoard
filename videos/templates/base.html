@@ -153,11 +153,11 @@
                       <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-start">
                         <li><a class="dropdown-item" href="/accounts/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                         <li><a class="dropdown-item" href="{% url 'videos:upload' %}"><span class="active"></span> Upload</a></li>
-                        <li><a class="dropdown-item" href="{% url 'videos:hord_profile' %}"><span class="active"></span> Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'account:hord_profile' %}"><span class="active"></span> Profile</a></li>
                       </ul>
                       {% else %}
                       <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" href="{% url 'videos:register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a class="dropdown-item" href="{% url 'account:register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                         <li><a class="dropdown-item" href="/accounts/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                       </ul>
                       {% endif %}

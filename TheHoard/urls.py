@@ -20,7 +20,10 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('videos.urls')),
+    path('videos/',include('videos.urls')),
+    path('account/',include('account.urls')),
+    path('likeD/',include('likeD.urls')),
+    path('commentR/',include('commentR.urls')),
     path('accounts/',include('django.contrib.auth.urls'))
 ]
 

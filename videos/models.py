@@ -6,6 +6,13 @@ from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db.models.base import Model
 from django.core.files.storage import FileSystemStorage
+from django.apps import apps
+
+# from account.models import Hord,Subscribers,SubHord
+# from likeD.models import VidLikes,VidDislikes
+
+# likeD_models = apps.get_models('likeD')
+# account_models = apps.get_models('account')
 
 vid_path = FileSystemStorage(location='/media/videos')
 
@@ -17,37 +24,37 @@ visibilty = (
 )
 
 
-class Hord(models.Model):
-    Name = models.CharField(max_length=200)
-    description = models.CharField(max_length=1000)
-    profile_image = models.ImageField(upload_to='images/profile/')
-    wall_paper = models.ImageField(upload_to='images/wall/')
-    subscribers  = models.ManyToManyField('auth.User', through='Subscribers',related_name='hoard_subscribers')
-    owner = models.OneToOneField('auth.user',on_delete=models.CASCADE)
+# class Hord(models.Model):
+#     Name = models.CharField(max_length=200)
+#     description = models.CharField(max_length=1000)
+#     profile_image = models.ImageField(upload_to='images/profile/')
+#     wall_paper = models.ImageField(upload_to='images/wall/')
+#     subscribers  = models.ManyToManyField('auth.User', through='Subscribers',related_name='hoard_subscribers')
+#     owner = models.OneToOneField('auth.user',on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.Name
+#     def __str__(self):
+#         return self.Name
 
-class Subscribers(models.Model):
-    hord = models.ForeignKey(Hord,on_delete=models.CASCADE,related_name='subsc_hord')
-    user = models.ForeignKey('auth.User',on_delete=models.CASCADE)
+# class Subscribers(models.Model):
+#     hord = models.ForeignKey(Hord,on_delete=models.CASCADE,related_name='subsc_hord')
+#     user = models.ForeignKey('auth.User',on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ('hord','user')
+#     class Meta:
+#         unique_together = ('hord','user')
 
-    def __str__(self):
-        return '%s subscribed to %s'%(self.user.username,self.hord.Name)
+#     def __str__(self):
+#         return '%s subscribed to %s'%(self.user.username,self.hord.Name)
 
 
     
 
-class SubHord(models.Model):
-    Name = models.CharField(max_length=200,
-            validators=[MinLengthValidator(5, "Title must be greater than 5 characters")])
-    hord = models.ForeignKey(Hord,on_delete=models.CASCADE)
+# class SubHord(models.Model):
+#     Name = models.CharField(max_length=200,
+#             validators=[MinLengthValidator(5, "Title must be greater than 5 characters")])
+#     hord = models.ForeignKey(Hord,on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 class Video(models.Model):
@@ -58,10 +65,10 @@ class Video(models.Model):
     thumbnail = models.FileField(upload_to='thumbnails/',blank=True)
     date_uploaded = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     date_updated = models.DateTimeField(auto_now=True)
-    hord = models.ForeignKey(Hord,on_delete=models.CASCADE)
+    hord = models.ForeignKey('account.Hord',on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    likes = models.ManyToManyField('auth.User', through='VidLikes' ,related_name='video_likes')
-    dislikes = models.ManyToManyField('auth.User', through='VidDislikes', related_name='video_dislikes')
+    likes = models.ManyToManyField('auth.User', through='likeD.VidLikes' ,related_name='video_likes')
+    dislikes = models.ManyToManyField('auth.User', through='likeD.VidDislikes', related_name='video_dislikes')
     visibilty = models.CharField(max_length=15,choices=visibilty)
 
     def __str__(self):
@@ -72,26 +79,26 @@ class Video(models.Model):
         super(Video,self).delete(*args,**kwargs)
 
 
-class VidLikes(models.Model):
-    video = models.ForeignKey(Video,on_delete=models.CASCADE)
-    user =  models.ForeignKey('auth.User', on_delete=models.CASCADE)
+# class VidLikes(models.Model):
+#     video = models.ForeignKey(Video,on_delete=models.CASCADE)
+#     user =  models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ('video','user')
+#     class Meta:
+#         unique_together = ('video','user')
 
-    def __str__(self):
-        return '%s likes %s'%(self.user.username,self.video.title)
+#     def __str__(self):
+#         return '%s likes %s'%(self.user.username,self.video.title)
 
 
-class VidDislikes(models.Model):
-    video = models.ForeignKey(Video,on_delete=models.CASCADE)
-    user =  models.ForeignKey('auth.User', on_delete=models.CASCADE)
+# class VidDislikes(models.Model):
+#     video = models.ForeignKey(Video,on_delete=models.CASCADE)
+#     user =  models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ('video','user')
+#     class Meta:
+#         unique_together = ('video','user')
 
-    def __str__(self):
-        return '%s dislikes %s'%(self.user.username,self.video.title)
+#     def __str__(self):
+#         return '%s dislikes %s'%(self.user.username,self.video.title)
 
 
 
@@ -103,35 +110,35 @@ class Playlist(models.Model):
     description = models.CharField(max_length=750)
     date_created = models.DateTimeField(auto_now_add=True)
     video = models.ForeignKey(Video,on_delete=models.CASCADE)
-    hord = models.ForeignKey(Hord,on_delete=models.CASCADE)
+    hord = models.ForeignKey('account.Hord',on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
 
 class Draft(models.Model):
     video = models.ForeignKey(Video,on_delete=models.CASCADE)
-    hord = models.ForeignKey(Hord,on_delete=models.CASCADE)
+    hord = models.ForeignKey('account.Hord',on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
 
-class Comment(models.Model):
-    c_text = models.TextField(verbose_name='', max_length=1000)
-    date_uploaded = models.DateTimeField(auto_now_add=True, blank=False, null=False)
-    date_updated = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    video = models.ForeignKey(Video, on_delete=models.CASCADE)
+# class Comment(models.Model):
+#     c_text = models.TextField(verbose_name='', max_length=1000)
+#     date_uploaded = models.DateTimeField(auto_now_add=True, blank=False, null=False)
+#     date_updated = models.DateTimeField(auto_now=True)
+#     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+#     video = models.ForeignKey(Video, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.c_text
+#     def __str__(self):
+#         return self.c_text
 
-class Reply(models.Model):
-    r_text = models.TextField()
-    date_uploaded = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now=True)
-    comment = models.ForeignKey(Comment,on_delete=models.CASCADE)
-    user = models.ForeignKey('auth.user',on_delete=models.CASCADE)
+# class Reply(models.Model):
+#     r_text = models.TextField()
+#     date_uploaded = models.DateTimeField(auto_now_add=True)
+#     date_updated = models.DateTimeField(auto_now=True)
+#     comment = models.ForeignKey(Comment,on_delete=models.CASCADE)
+#     user = models.ForeignKey('auth.user',on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.r_text
+#     def __str__(self):
+#         return self.r_text
 
 
 

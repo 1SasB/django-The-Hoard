@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'videos'
+    'account',
+    'videos',
+    'commentR',
+    'likeD'
+
 ]
 
 MIDDLEWARE = [
